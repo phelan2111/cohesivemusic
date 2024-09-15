@@ -12,7 +12,7 @@ function App() {
 			<Suspense fallback={<LoaderScreen />}>
 				<RouterProvider
 					router={router}
-					fallbackElement={<>Not Founds 404</>}
+					fallbackElement={<>Not Founds Page</>}
 				/>
 			</Suspense>
 		</Provider>
