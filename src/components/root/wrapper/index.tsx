@@ -29,7 +29,7 @@ function Wrapper({ className = '', ...props }: IWrapperProps) {
 			<div className='max-w-[1920px] m-auto w-full lg:flex lg:p-6 lg:gap-6'>
 				{props.isNavigate && <NavigateLeft />}
 				<div className='flex w-full gap-6'>
-					<div className='w-full lg:flex lg:gap-6 lg:flex-col'>
+					<div className='min-w-full w-full lg:flex lg:gap-6 lg:flex-col'>
 						{props.isHeader && <Header />}
 						{props.children}
 					</div>

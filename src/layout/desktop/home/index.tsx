@@ -19,7 +19,7 @@ export function handleStyleViewTool() {
 function HomeDesktop() {
 	return (
 		<ResponsiveDesktop>
-			<div className='flex flex-col gap-5'>
+			<div className='flex flex-col gap-5 w-full'>
 				<AppBarTop />
 				<section className='w-full animate-translateBottom_duration_0dot8 flex flex-col gap-8 pb-4 lg:h-desktopWrapper lg:overflow-auto scrollHiddenY pr-3'>
 					<FamiliarAlbum />

@@ -19,7 +19,7 @@ function PlaySong() {
 	};
 
 	return (
-		<article className='fixed bottom-[70px] w-full z-30 right-0 bg-primary_dark-10 rounded-t-2xl lg:bottom-0 transition-all duration-500'>
+		<article className='fixed bottom-[70px] w-full left-0 m-auto z-30 right-0 bg-primary_dark-10 rounded-t-2xl lg:bottom-0 transition-all duration-500'>
 			<div className='px-4 flex justify-between items-center'>
 				<div className='flex gap-2 pb-6 pt-4 xl:pb-4'>
 					<img
