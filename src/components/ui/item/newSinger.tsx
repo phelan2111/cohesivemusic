@@ -2,13 +2,13 @@ import dayjs from 'dayjs';
 import { CiCirclePlus, CiMenuKebab, CiSaveDown1 } from 'react-icons/ci';
 import { IoMdPlayCircle } from 'react-icons/io';
 
-interface INewSingerItemProps {
+export type NewsItem = {
 	createAt: number;
 	nameSong: string;
 	singer: string;
 	image: string;
-}
-function NewSingerItem(props: INewSingerItemProps) {
+};
+function NewSingerItem(props: NewsItem) {
 	return (
 		<div className='flex flex-col gap-1 pt-4 pb-3 px-4 snap-start'>
 			<div className='flex gap-3 items-center'>

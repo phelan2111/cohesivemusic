@@ -76,16 +76,17 @@ const router = createBrowserRouter([
 						path: PATH.CHART.DETAILS,
 						element: <Chart />,
 					},
+					{
+						path: PATH.WHAT_NEWS,
+						element: <WhatNews />,
+					},
 				],
 			},
 			{
 				path: PATH.ADD_ACCOUNT,
 				element: <AddAccount />,
 			},
-			{
-				path: PATH.WHAT_NEWS,
-				element: <WhatNews />,
-			},
+
 			{
 				path: PATH.LISTENING_HISTORY._,
 				element: <ListeningHistory />,
@@ -94,13 +95,14 @@ const router = createBrowserRouter([
 				path: PATH.PLAYLIST.DETAILS,
 				element: <Playlist />,
 			},
-			{
-				path: PATH.SETTING,
-				element: <Setting />,
-			},
+
 			{
 				path: PATH.PROFILE,
 				element: <Profile />,
+			},
+			{
+				path: PATH.SETTING,
+				element: <Setting />,
 			},
 		],
 	},

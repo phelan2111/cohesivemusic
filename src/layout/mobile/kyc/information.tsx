@@ -12,7 +12,7 @@ interface IInformationSignUpMobileProps {
 function InformationSignUpMobile(props: IInformationSignUpMobileProps) {
 	return (
 		<div className='bg-white/10 px-10 py-4 rounded-md flex-col justify-center gap-10 w-full h-screen select-none flex'>
-			<div className='flex justify-center flex-col items-center animate-translateRight'>
+			<div className='flex justify-center flex-col items-center '>
 				<LogoComponent />
 				<div className='mt-2 px-2 py-2 rounded-sm text-center w-full'>
 					<h4 className='font-bold text-lg'>
@@ -20,7 +20,7 @@ function InformationSignUpMobile(props: IInformationSignUpMobileProps) {
 					</h4>
 				</div>
 			</div>
-			<div className='animate-translateRight'>
+			<div>
 				<h4 className='text-3xl font-bold'>
 					{Localize('CREATE_PROFILE')}
 				</h4>
@@ -29,7 +29,7 @@ function InformationSignUpMobile(props: IInformationSignUpMobileProps) {
 			<Form
 				render={() => {
 					return (
-						<div className='flex flex-col gap-12 animate-translateRight'>
+						<div className='flex flex-col gap-12 '>
 							<div className='flex flex-col gap-6'>
 								<TextField label='FIRST_NAME' />
 								<TextField label='LAST_NAME' />

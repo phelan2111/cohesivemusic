@@ -89,6 +89,7 @@ export const dataLocalizeEN: Record<string, string> = {
 	NOTIFICATIONS: 'Notifications',
 	ABOUT: 'About',
 	LOG_OUT: 'Log out',
+	LOG_OUT_DES: 'Are you sure you want to log out',
 	PROFILE: 'Profile',
 	FOLLOWERS: 'Followers',
 	FOLLOWING: 'Following',
@@ -106,4 +107,9 @@ export const dataLocalizeEN: Record<string, string> = {
 	VERIFIED_ARTIST: 'Verified Artist',
 	POPULAR: 'Popular',
 	FAN_ALSO_LIKE: 'Fan also like',
+	WHATNEWS_DESCRIPTION:
+		'The latest releases from artists, podcasts, and shows you follow.',
+	SUPPORT: 'Support',
+	CONFIRM: 'Confirm',
+	CANCEL: 'Cancel',
 };

@@ -1,11 +1,162 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Localize from '@/langs';
 import LogoComponent from '../logo';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { PATH } from '@/routes/config';
+import { useRedirect } from '@/hooks/useRedirect';
+import useCheckPath from '@/hooks/useCheckPath';
+import Popover from '@/components/root/popper';
+import { AiOutlineExport } from 'react-icons/ai';
+import { useContext } from 'react';
+import { ModalContext } from '@/contexts/modal';
+import Button from '@/components/root/button';
 
 interface IViewProps {
 	onClickTab: (path: string) => void;
 	isSearch: boolean;
+}
+
+function Notification() {
+	const { redirectPage } = useRedirect();
+	const isTargeting = !useCheckPath({
+		paths: [PATH.WHAT_NEWS],
+	});
+	return (
+		<div
+			aria-hidden
+			onClick={() =>
+				redirectPage(isTargeting ? PATH.WHAT_NEWS : PATH.HOME)
+			}
+			style={{
+				background: isTargeting ? '#191717' : 'white',
+				color: isTargeting ? 'white' : '#191717',
+			}}
+			className='min-w-10 h-10 rounded-full flex justify-center items-center transition-all hover:scale-110 cursor-pointer'>
+			<IoNotificationsOutline className='text-lg' />
+		</div>
+	);
+}
+
+type ItemProfile = {
+	label: string;
+	path: string;
+	isBlank?: boolean;
+	disabled?: boolean;
+};
+
+const features: ItemProfile[] = [
+	{
+		label: 'ACCOUNT',
+		path: PATH.ACCOUNT,
+		isBlank: true,
+	},
+	{
+		label: 'PROFILE',
+		path: PATH.PROFILE,
+	},
+	{
+		label: 'SUPPORT',
+		path: PATH.SUPPORT,
+		isBlank: true,
+	},
+	{
+		label: 'SETTING',
+		path: PATH.SETTING,
+	},
+];
+
+type ItemProfileProps = {
+	onClick?: VoidFunction;
+} & ItemProfile;
+function ItemProfile(props: ItemProfileProps) {
+	return (
+		<li
+			aria-hidden
+			onClick={props.onClick}
+			className='flex justify-between items-center py-3 px-4 hover:bg-primary_dark-10 transition-all duration-300 cursor-pointer'>
+			<p>{Localize(props.label)}</p>
+			{props.isBlank && <AiOutlineExport />}
+		</li>
+	);
+}
+function Profile() {
+	const { redirectPage } = useRedirect();
+	const { onModal, onCloseModal } = useContext(ModalContext);
+
+	const localize = {
+		LOGOUT: Localize('LOG_OUT'),
+		LOGOUT_DES: Localize('LOG_OUT_DES'),
+		CONFIRM: Localize('CONFIRM'),
+		CANCEL: Localize('CANCEL'),
+	};
+
+	return (
+		<Popover
+			className='rounded-sm !top-7 right-40'
+			renderContent={({ onClose }) => {
+				return (
+					<div className='min-w-56 bg-primary_dark-20 shadow-xl overflow-hidden rounded-xl flex flex-col gap-2 justify-center items-center'>
+						<ul className='w-full'>
+							{features.map((f) =>
+								f.isBlank ? (
+									// eslint-disable-next-line jsx-a11y/anchor-is-valid
+									<a
+										href={f.path}
+										target='_blank'
+										key={f.path}
+										rel='noreferrer'>
+										<ItemProfile {...f} />
+									</a>
+								) : (
+									<ItemProfile
+										onClick={() => redirectPage(f.path)}
+										{...f}
+										key={f.path}
+									/>
+								),
+							)}
+							<li
+								aria-hidden
+								onClick={() => {
+									onClose();
+									onModal(
+										<div className='bg-white rounded-lg w-96'>
+											<p className='font-medium p-4 border-b pb-2 text-2xl'>
+												{localize.LOGOUT}
+											</p>
+											<p className='p-4'>
+												{localize.LOGOUT_DES}
+											</p>
+											<div className='p-4 flex gap-4'>
+												<Button
+													type='button'
+													onClick={onCloseModal}
+													className='!rounded-md w-full !bg-transparent !text-primary_dark-20'>
+													{localize.CANCEL}
+												</Button>
+												<Button className='!rounded-md w-full'>
+													{localize.CONFIRM}
+												</Button>
+											</div>
+										</div>,
+									);
+								}}
+								className='flex justify-between items-center py-3 px-4 hover:bg-primary_dark-10 transition-all duration-300 cursor-pointer border-t border-primary_dark-10'>
+								<p>{Localize('LOG_OUT')}</p>
+							</li>
+						</ul>
+					</div>
+				);
+			}}>
+			<div className='p-2 bg-primary_dark-20 rounded-full flex justify-center h-fit items-center transition-transform hover:scale-110 cursor-pointer'>
+				<img
+					className='min-w-6 h-6 rounded-full'
+					src='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
+					alt='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
+				/>
+			</div>
+		</Popover>
+	);
 }
 
 function View(props: IViewProps) {
@@ -92,16 +243,8 @@ function View(props: IViewProps) {
 					</div>
 				</div>
 				<div className='flex gap-2 bg-primary_dark-10 py-4 px-6 rounded-3xl items-center'>
-					<div className='min-w-10 h-10 bg-primary_dark-20 rounded-full flex justify-center items-center transition-transform hover:scale-110 cursor-pointer'>
-						<IoNotificationsOutline className='text-lg' />
-					</div>
-					<div className='p-2 bg-primary_dark-20 rounded-full flex justify-center h-fit items-center transition-transform hover:scale-110 cursor-pointer'>
-						<img
-							className='min-w-6 h-6 rounded-full'
-							src='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
-							alt='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
-						/>
-					</div>
+					<Notification />
+					<Profile />
 				</div>
 			</div>
 		</header>

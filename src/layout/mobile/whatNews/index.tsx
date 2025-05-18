@@ -6,28 +6,13 @@ import PlaySong from '@/components/ui/play/song';
 import BottomNavigate, { links } from '@/components/root/navigate/bottom';
 import { useRedirect } from '@/hooks/useRedirect';
 import { useEffect } from 'react';
-const filter: IItemFilterChip[] = [
-	{
-		label: 'Music',
-		value: 'Music',
-	},
-	{
-		label: 'Podcasts & Show',
-		value: 'Podcasts&Show',
-		children: [
-			{
-				label: 'Podcasts & Show',
-				value: 'Podcasts&Show',
-			},
-			{
-				label: 'Unplayed',
-				value: 'Unplayed',
-			},
-		],
-	},
-];
+import { NewsItem } from '@/components/ui/item/newSinger';
 
-function WhatNewsMobile() {
+type WhatNewsMobileProps = {
+	filter: IItemFilterChip[];
+	news: NewsItem[];
+};
+function WhatNewsMobile(props: WhatNewsMobileProps) {
 	const { redirectPrev } = useRedirect();
 
 	useEffect(() => {
@@ -79,10 +64,10 @@ function WhatNewsMobile() {
 					</p>
 				</div>
 				<article className='p-4'>
-					<FilterChip data={filter} />
+					<FilterChip data={props.filter} />
 				</article>
 				<h2 className='text-md font-bold px-4'>{Localize('NEW')}</h2>
-				<New />
+				<New data={props.news} />
 			</div>
 			<BottomNavigate defaultPath={links[0]} />
 			<PlaySong />

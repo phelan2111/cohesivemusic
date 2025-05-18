@@ -25,6 +25,7 @@ function Wrapper({ className = '', ...props }: IWrapperProps) {
 	const isView = sliceToolControl.useGetState().open;
 	return (
 		<main
+			id='wrapper'
 			className={`min-h-screen bg-primary_light text-primary_dark dark:bg-primary_dark dark:text-primary_light ${className}`}>
 			<div className='max-w-[1920px] m-auto w-full lg:flex lg:p-6'>
 				{props.isNavigate && <NavigateLeft />}

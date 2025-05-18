@@ -33,4 +33,6 @@ export const PATH = {
 	},
 	SETTING: '/setting',
 	PROFILE: '/profile',
+	ACCOUNT: '/account',
+	SUPPORT: '/support',
 };

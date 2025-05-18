@@ -3,18 +3,25 @@
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { RouterProvider } from 'react-router-dom';
-import router from './routes';
 import { Suspense } from 'react';
+import router from './routes';
 import LoaderScreen from './components/ui/loader/screen';
+import ModalProvider from './contexts/modal';
+import ToastProvider from './contexts/toast';
+
 function App() {
 	return (
 		<Provider store={store}>
-			<Suspense fallback={<LoaderScreen />}>
-				<RouterProvider
-					router={router}
-					fallbackElement={<>Not Founds Page</>}
-				/>
-			</Suspense>
+			<ModalProvider>
+				<ToastProvider>
+					<Suspense fallback={<LoaderScreen />}>
+						<RouterProvider
+							router={router}
+							fallbackElement={<>Not Founds Page</>}
+						/>
+					</Suspense>
+				</ToastProvider>
+			</ModalProvider>
 		</Provider>
 	);
 }

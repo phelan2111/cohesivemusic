@@ -1,6 +1,4 @@
 import Button from '@/components/root/button';
-import BottomNavigate, { links } from '@/components/root/navigate/bottom';
-import PlaySong from '@/components/ui/play/song';
 import { useRedirect } from '@/hooks/useRedirect';
 import Localize from '@/langs';
 import { PATH } from '@/routes/config';
@@ -64,8 +62,6 @@ function SettingMobile() {
 					<Button>{Localize('LOG_OUT')}</Button>
 				</div>
 			</section>
-			<BottomNavigate defaultPath={links[0]} />
-			<PlaySong />
 		</main>
 	);
 }
