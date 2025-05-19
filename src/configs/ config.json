@@ -1,0 +1,16 @@
+{
+    "api": {
+        "host": "https://cohesivemusicbe-production.up.railway.app",
+        "user": {
+            "register": "/user/register",
+            "loginWithGG": "/user/loginWithGoogle"
+        }
+    },
+    "clientId": "1044167993607-jt9ba2dqtc24e32d20e5o17o2k7bo13t.apps.googleusercontent.com",
+    "cookie": {
+        "auth": "b678c443a4348d715aab1cac2c9bb602",
+        "profile": "5ab3f162e4110bd1aad4e69c5f8a5002",
+        "rsaKey": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0+B5KsZ/Q4c252WDMHVf4TPtoWwfTiikKu7NGkGaleBWZbDTyql4Cxf6aTMrIyqfYShGCVFWhJgNSmAbqkzvRr9BJVbyTVXppbTbeCKplpFso6IoMBXMizq3P+5VyvS+YFhPrCzDv5iFvMgnmkjlRm3rUZ0Nd22UdIh1Rvb3A/AnnzHR1PEqyYaS4/kzHgwKO0H404QTTA8Js67pA/WC4Bv/6fnE/GXMwsoWzZXwPeofSBkXFNsj2nrXROUfDzUmUQaMZT4monOt1ihzyRiF7+yHk6jmtFNU8KgrX2rnkqtpSCl524zFR9fztZplq2VqvpuefQNuBy3y5Ss1EnY24wIDAQAB",
+        "expireAt": "a8302fcfb5dd1a1506ab3555277110e6"
+    }
+}

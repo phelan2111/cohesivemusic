@@ -1,21 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ISignUpUserProps } from '.';
+import { useContext } from 'react';
 import View from './view';
-import useGoogle from '@/hooks/useGoogle';
-import { Logger } from '@/utils/logger';
+import { ToastContext, ToastType } from '@/contexts/toast';
 import { ResponseRegisterWithGG } from '@/services/users/registerWithGG';
 import dayjs from 'dayjs';
 import AuthService, { IProfileUser } from '@/utils/auth';
+import useGoogle from '@/hooks/useGoogle';
+import { Logger } from '@/utils/logger';
 import axios from 'axios';
 import Config from '@/configs';
 import { CODE } from '@/configs/responseCode';
-import { useContext } from 'react';
-import { ToastContext, ToastType } from '@/contexts/toast';
+import { useRedirect } from '@/hooks/useRedirect';
+import { PATH } from '@/routes/config';
 const config = new Config().getState();
 
-interface IComponentProps extends ISignUpUserProps {}
-function Model(props: IComponentProps) {
+function Controller() {
 	const { onToast } = useContext(ToastContext);
+	const { redirectPage } = useRedirect();
 
 	const handleAuth = (response: ResponseRegisterWithGG) => {
 		const expireAt = dayjs().unix() * 180000;
@@ -29,7 +29,7 @@ function Model(props: IComponentProps) {
 			response?.data?.info as IProfileUser,
 			expireAt,
 		);
-		props.onSignUpWithGGSuccess();
+		redirectPage(PATH.HOME);
 	};
 
 	const { handler } = useGoogle({
@@ -63,12 +63,7 @@ function Model(props: IComponentProps) {
 		},
 	});
 
-	const handleSubmit = () => {
-		props.onSignUpSuccess();
-	};
-	return (
-		<View onSubmit={handleSubmit} onSignUpWithGG={handler.onLoginWithGG} />
-	);
+	return <View onLoginWithGG={handler.onLoginWithGG} />;
 }
 
-export default Model;
+export default Controller;

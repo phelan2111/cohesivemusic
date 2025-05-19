@@ -15,7 +15,12 @@ function ComponentStep(props: IComponentStepProps) {
 			return <InformationSignUp />;
 		}
 		default: {
-			return <SignUpUser onSignUpSuccess={props.onSubmitFormUser} />;
+			return (
+				<SignUpUser
+					onSignUpWithGGSuccess={props.onLoginWithGoogleSuccess}
+					onSignUpSuccess={props.onSubmitFormUser}
+				/>
+			);
 		}
 	}
 }
@@ -23,6 +28,7 @@ function ComponentStep(props: IComponentStepProps) {
 interface IViewProps {
 	onSubmitFormUser: VoidFunction;
 	onSubmitOTP: VoidFunction;
+	onLoginWithGoogleSuccess: VoidFunction;
 	step: STEP_SIGN_UP;
 }
 function View(props: IViewProps) {

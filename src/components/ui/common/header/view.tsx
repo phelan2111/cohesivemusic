@@ -10,6 +10,7 @@ import { AiOutlineExport } from 'react-icons/ai';
 import { useContext } from 'react';
 import { ModalContext } from '@/contexts/modal';
 import Button from '@/components/root/button';
+import AuthService from '@/utils/auth';
 
 interface IViewProps {
 	onClickTab: (path: string) => void;
@@ -82,6 +83,7 @@ function ItemProfile(props: ItemProfileProps) {
 function Profile() {
 	const { redirectPage } = useRedirect();
 	const { onModal, onCloseModal } = useContext(ModalContext);
+	const auth = AuthService.getPackageProfile();
 
 	const localize = {
 		LOGOUT: Localize('LOG_OUT'),
@@ -92,6 +94,7 @@ function Profile() {
 
 	return (
 		<Popover
+			key={JSON.stringify(auth)}
 			className='rounded-sm !top-7 right-40'
 			renderContent={({ onClose }) => {
 				return (
@@ -134,7 +137,15 @@ function Profile() {
 													className='!rounded-md w-full !bg-transparent !text-primary_dark-20'>
 													{localize.CANCEL}
 												</Button>
-												<Button className='!rounded-md w-full'>
+												<Button
+													onClick={() => {
+														AuthService.removeAll();
+														redirectPage(
+															PATH.KYC.SIGN_IN,
+														);
+														onCloseModal();
+													}}
+													className='!rounded-md w-full'>
 													{localize.CONFIRM}
 												</Button>
 											</div>
@@ -151,8 +162,8 @@ function Profile() {
 			<div className='p-2 bg-primary_dark-20 rounded-full flex justify-center h-fit items-center transition-transform hover:scale-110 cursor-pointer'>
 				<img
 					className='min-w-6 h-6 rounded-full'
-					src='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
-					alt='https://i.pinimg.com/736x/42/d1/6f/42d16fffa8c6c6124a7bd66ddc818c39.jpg'
+					src={auth?.avatar}
+					alt={auth?.lastName}
 				/>
 			</div>
 		</Popover>

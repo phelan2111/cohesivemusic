@@ -9,7 +9,11 @@ import Localize from '@/langs';
 import { PATH } from '@/routes/config';
 import { FcGoogle } from 'react-icons/fc';
 
-function SignInDesktop() {
+type SignInDesktopProps = {
+	onLoginWithGG: VoidFunction;
+};
+
+function SignInDesktop(props: SignInDesktopProps) {
 	const { redirectPage } = useRedirect();
 	return (
 		<div className='hidden lg:flex m-auto p-6 relative z-10 w-full h-full'>
@@ -25,7 +29,10 @@ function SignInDesktop() {
 						<p className='text-sm'>{Localize('LET_GET_STARTED')}</p>
 					</div>
 					<div>
-						<div className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
+						<div
+							aria-hidden
+							onClick={props.onLoginWithGG}
+							className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
 							<FcGoogle />
 							<p className='font-medium'>
 								{Localize('LOGIN_GOOGLE')}

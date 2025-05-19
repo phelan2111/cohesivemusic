@@ -1,7 +1,7 @@
-import Model from './model';
+import Controller from './controller';
 
 function SignUp() {
-	return <Model />;
+	return <Controller />;
 }
 
 export default SignUp;

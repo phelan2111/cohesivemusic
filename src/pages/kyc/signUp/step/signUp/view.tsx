@@ -4,6 +4,7 @@ import SignUpMobile from '@/layout/mobile/kyc/signUp';
 
 interface IViewProps {
 	onSubmit: VoidFunction;
+	onSignUpWithGG: VoidFunction;
 }
 
 function View(props: IViewProps) {

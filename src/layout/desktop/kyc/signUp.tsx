@@ -9,6 +9,7 @@ import { PATH } from '@/routes/config';
 
 interface ISignUpDesktopProps {
 	onSubmit: VoidFunction;
+	onSignUpWithGG: VoidFunction;
 }
 
 function SignUpDesktop(props: ISignUpDesktopProps) {
@@ -33,7 +34,10 @@ function SignUpDesktop(props: ISignUpDesktopProps) {
 					</p>
 				</div>
 				<div>
-					<div className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
+					<div
+						aria-hidden
+						onClick={props.onSignUpWithGG}
+						className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
 						<FcGoogle />
 						<p className='font-medium'>
 							{Localize('LOGIN_GOOGLE')}

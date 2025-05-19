@@ -1,5 +1,6 @@
 import { ToastContext, ToastType } from '@/contexts/toast';
 import Localize from '@/langs';
+import { Helper } from '@/utils/helper';
 import { ReactNode, useContext, useEffect } from 'react';
 import { BsBanFill } from 'react-icons/bs';
 import { FaCheckCircle, FaPaw } from 'react-icons/fa';
@@ -43,15 +44,32 @@ function Toast() {
 	return (
 		<div
 			className={`fixed top-4 bg-white/10 backdrop-blur-2xl rounded-lg transition-all z-50 min-w-72 duration-500 ${
-				hasToast ? 'translate-x-0 right-4 opacity-100' : 'translate-x-full right-0 opacity-0'
+				hasToast
+					? 'translate-x-0 right-4 opacity-100'
+					: 'translate-x-full right-0 opacity-0'
 			}`}>
 			{data.renderComponent?.() ?? (
 				<div className='p-4'>
-					<div className={`flex items-center gap-4 ${parseToast[data.theme as ToastType].className}`}>
+					<div
+						className={`flex items-center gap-4 ${
+							parseToast[data.theme as ToastType].className
+						}`}>
 						{parseToast[data.theme as ToastType].icon}
 						<div className='flex flex-col gap-1'>
-							<p className='text-xl font-semibold'>{Localize(data?.label ?? 'SYSTEM_ERROR')}</p>
-							<p className='text-sm'>{Localize(data?.content ?? 'SOMETHING_WERE_WRONG')}</p>
+							<p className='text-xl font-semibold'>
+								{!Helper.isEmpty(
+									Localize(data?.label as string),
+								)
+									? Localize(data?.label as string)
+									: data.label}
+							</p>
+							<p className='text-sm'>
+								{!Helper.isEmpty(
+									Localize(data?.content as string),
+								)
+									? Localize(data?.content as string)
+									: data.content}
+							</p>
 						</div>
 					</div>
 				</div>

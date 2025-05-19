@@ -112,4 +112,8 @@ export const dataLocalizeEN: Record<string, string> = {
 	SUPPORT: 'Support',
 	CONFIRM: 'Confirm',
 	CANCEL: 'Cancel',
+	SYSTEM_ERROR: 'System Error!',
+	SOMETHING_WERE_WRONG: 'Something were wrong!',
+	ACCOUNT_WRONG: 'Account Wrong',
+	ACCOUNT_WRONG_DES: 'Account already exists in the system',
 };
