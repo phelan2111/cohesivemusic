@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CODE } from '@/configs/responseCode';
+import { IProfileUser } from '@/utils/auth';
 
 export type ResponseHasNotResponseProps = {
 	onSuccess: VoidFunction;
@@ -26,7 +27,12 @@ export type PayloadRequestList = {
 	search?: string;
 	[name: string]: unknown;
 };
-
+export type ResponseRegisterWithGG = {
+	data?: {
+		token: string;
+		info: IProfileUser;
+	};
+} & ResponseNotData;
 export type ResponseRequest<T> = {
 	list: T[];
 	total: number;

@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import View from './view';
 import { ToastContext, ToastType } from '@/contexts/toast';
-import { ResponseRegisterWithGG } from '@/services/users/registerWithGG';
 import dayjs from 'dayjs';
 import AuthService, { IProfileUser } from '@/utils/auth';
 import useGoogle from '@/hooks/useGoogle';
@@ -11,6 +10,7 @@ import Config from '@/configs';
 import { CODE } from '@/configs/responseCode';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
+import { ResponseRegisterWithGG } from '@/services/types';
 const config = new Config().getState();
 
 function Controller() {

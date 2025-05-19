@@ -3,7 +3,6 @@ import { ISignUpUserProps } from '.';
 import View from './view';
 import useGoogle from '@/hooks/useGoogle';
 import { Logger } from '@/utils/logger';
-import { ResponseRegisterWithGG } from '@/services/users/registerWithGG';
 import dayjs from 'dayjs';
 import AuthService, { IProfileUser } from '@/utils/auth';
 import axios from 'axios';
@@ -11,6 +10,7 @@ import Config from '@/configs';
 import { CODE } from '@/configs/responseCode';
 import { useContext } from 'react';
 import { ToastContext, ToastType } from '@/contexts/toast';
+import { ResponseRegisterWithGG } from '@/services/types';
 const config = new Config().getState();
 
 interface IComponentProps extends ISignUpUserProps {}
