@@ -1,9 +1,11 @@
 import Component from './component';
+import { FormDataUserSignUp } from '../../types';
 
 export interface ISignUpUserProps {
-	onSignUpSuccess: VoidFunction;
+	onSubmit: (dataItem?: FormDataUserSignUp) => void;
 	onSignUpWithGGSuccess: VoidFunction;
 }
+
 function SignUpUser(props: ISignUpUserProps) {
 	return <Component {...props} />;
 }

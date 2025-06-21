@@ -109,4 +109,14 @@ export class Helper {
 			hours: hours.toFixed(0),
 		};
 	}
+	static maskEmail(email: string) {
+		const [local, domain] = email.split('@');
+		if (local.length <= 2) {
+			return '*'.repeat(local.length) + '@' + domain;
+		}
+
+		const visiblePart = local.slice(0, 2);
+		const maskedPart = '*'.repeat(local.length - 2);
+		return `${visiblePart}${maskedPart}@${domain}`;
+	}
 }

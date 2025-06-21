@@ -47,5 +47,6 @@ module.exports = {
 			},
 		],
 		'react-hooks/exhaustive-deps': 'off',
+		'@typescript-eslint/no-unused-vars': 'off',
 	},
 };

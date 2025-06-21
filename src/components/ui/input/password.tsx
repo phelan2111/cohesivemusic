@@ -12,6 +12,7 @@ function InputPassword(props: IInputPasswordProps) {
 	};
 	return (
 		<TextField
+			name='password'
 			type={isShowPass ? 'text' : 'password'}
 			icon={{
 				direction: 'end',

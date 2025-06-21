@@ -1,14 +1,17 @@
 import LogoComponent from '@/components/ui/common/logo';
 import Button from '@/components/root/button';
-import Form from '@/components/root/form';
+import Form, { SubmitForm } from '@/components/root/form';
 import TextField from '@/components/root/inputs/textField';
 import Localize from '@/langs';
 import { FcGoogle } from 'react-icons/fc';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
+import { FormDataUserSignUp } from '@/pages/kyc/signUp/types';
+import { string } from 'yup';
 
-interface ISignUpMobileProps {
-	onSubmit: VoidFunction;
+interface ISignUpMobileProps
+	extends Pick<SubmitForm<FormDataUserSignUp>, 'onSubmit'> {
+	onSignUpWithGG: VoidFunction;
 }
 
 function SignUpMobile(props: ISignUpMobileProps) {
@@ -28,19 +31,27 @@ function SignUpMobile(props: ISignUpMobileProps) {
 				<p className='text-xs pt-2'>{Localize('LET_GET_STARTED')} </p>
 			</div>
 			<div className='animate-translateRight'>
-				<div className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
+				<div
+					aria-hidden
+					onClick={props.onSignUpWithGG}
+					className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
 					<FcGoogle />
 					<p className='font-medium'>{Localize('LOGIN_GOOGLE')}</p>
 				</div>
 				<p className='text-center py-3'>{Localize('OR')}</p>
 				<Form
-					render={() => {
+					validator={{
+						username: string().required(),
+					}}
+					onSubmit={props.onSubmit}
+					render={({ formState }) => {
 						return (
 							<div className='flex flex-col gap-4'>
-								<TextField label='USER_NAME' />
+								<TextField name='username' label='USER_NAME' />
 								<div className='pt-[26px] w-full'>
 									<Button
-										onClick={props.onSubmit}
+										disabled={!formState.isValid}
+										type='submit'
 										text='SIGN_UP'
 									/>
 								</div>

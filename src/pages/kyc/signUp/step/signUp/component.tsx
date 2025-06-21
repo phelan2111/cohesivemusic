@@ -11,6 +11,8 @@ import { CODE } from '@/configs/responseCode';
 import { useContext } from 'react';
 import { ToastContext, ToastType } from '@/contexts/toast';
 import { ResponseRegisterWithGG } from '@/services/types';
+import { FormDataUserSignUp } from '../../types';
+import { Services } from '@/services';
 const config = new Config().getState();
 
 interface IComponentProps extends ISignUpUserProps {}
@@ -25,10 +27,7 @@ function Model(props: IComponentProps) {
 			},
 			dayjs().unix() * 18000,
 		);
-		AuthService.setPackageProfile(
-			response?.data?.info as IProfileUser,
-			expireAt,
-		);
+		AuthService.setPackageProfile(response?.data?.info as IProfileUser, expireAt);
 		props.onSignUpWithGGSuccess();
 	};
 
@@ -37,10 +36,7 @@ function Model(props: IComponentProps) {
 			onError: () => {},
 			onSuccess: async (response) => {
 				Logger.info('SignUp Controller execute useGoogle');
-				Logger.debug(
-					'SignUp Controller execute useGoogle have response',
-					response,
-				);
+				Logger.debug('SignUp Controller execute useGoogle have response', response);
 
 				await axios({
 					url: `${config.api.host}${config.api.user.loginWithGG}`,
@@ -63,12 +59,17 @@ function Model(props: IComponentProps) {
 		},
 	});
 
-	const handleSubmit = () => {
-		props.onSignUpSuccess();
+	const { handlerService } = Services.User.VerifyUsername({
+		onSuccess: () => {},
+	});
+
+	const handleSubmit = (dataItem?: FormDataUserSignUp) => {
+		handlerService.onVerifyUsername({
+			email: dataItem?.username as string,
+		});
+		props.onSubmit(dataItem);
 	};
-	return (
-		<View onSubmit={handleSubmit} onSignUpWithGG={handler.onLoginWithGG} />
-	);
+	return <View onSubmit={handleSubmit} onSignUpWithGG={handler.onLoginWithGG} />;
 }
 
 export default Model;

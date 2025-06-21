@@ -1,7 +1,12 @@
+import { FormDataInformation } from '../../types';
 import Component from './component';
 
-function InformationSignUp() {
-	return <Component />;
+export type InformationSignUpProps = {
+	onSubmit: (dataForm?: FormDataInformation) => void;
+};
+
+function InformationSignUp(props: InformationSignUpProps) {
+	return <Component {...props} />;
 }
 
 export default InformationSignUp;

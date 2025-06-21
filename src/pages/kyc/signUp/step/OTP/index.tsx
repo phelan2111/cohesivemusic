@@ -1,7 +1,9 @@
+import { FormDataOTPSignUp, FormDataUserSignUp } from '../../types';
 import Component from './component';
 
 export interface IOTPSignUpProps {
-	onSubmit: VoidFunction;
+	formUsername: FormDataUserSignUp;
+	onSubmit: (dataForm: FormDataOTPSignUp) => void;
 }
 function OTPSignUp(props: IOTPSignUpProps) {
 	return <Component {...props} />;

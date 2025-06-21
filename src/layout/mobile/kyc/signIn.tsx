@@ -9,10 +9,11 @@ import InputPassword from '@/components/ui/input/password';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 
-interface ISignInMobileProps {}
+interface ISignInMobileProps {
+	onLoginWithGG: VoidFunction;
+}
 
 function SignInMobile(props: ISignInMobileProps) {
-	console.log('SignInMobile', props);
 	const { redirectPage } = useRedirect();
 	return (
 		<div className='bg-white/10 px-10 py-4 rounded-md flex-col justify-center gap-10 w-full h-screen select-none flex lg:hidden'>
@@ -29,7 +30,10 @@ function SignInMobile(props: ISignInMobileProps) {
 				<p className='text-xs pt-2'>{Localize('LET_GET_STARTED')} </p>
 			</div>
 			<div className='animate-translateRight'>
-				<div className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
+				<div
+					aria-hidden
+					onClick={props.onLoginWithGG}
+					className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
 					<FcGoogle />
 					<p className='font-medium'>{Localize('LOGIN_GOOGLE')}</p>
 				</div>

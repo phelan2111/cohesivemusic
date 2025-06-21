@@ -4,9 +4,11 @@ import Form from '@/components/root/form';
 import TextField from '@/components/root/inputs/textField';
 import Localize from '@/langs';
 import InputPassword from '@/components/ui/input/password';
+import { FormDataInformation } from '@/pages/kyc/signUp/types';
+import { string } from 'yup';
 
 interface IInformationSignUpMobileProps {
-	onSubmit: VoidFunction;
+	onSubmit: (dataForm: FormDataInformation) => void;
 }
 
 function InformationSignUpMobile(props: IInformationSignUpMobileProps) {
@@ -27,17 +29,27 @@ function InformationSignUpMobile(props: IInformationSignUpMobileProps) {
 				<p className='text-xs pt-2'>{Localize('LET_GET_STARTED')}</p>
 			</div>
 			<Form
-				render={() => {
+				validator={{
+					firstName: string().required(),
+					lastName: string().required(),
+					password: string().required(),
+				}}
+				onSubmit={props.onSubmit}
+				render={({ formState }) => {
 					return (
 						<div className='flex flex-col gap-12 '>
 							<div className='flex flex-col gap-6'>
-								<TextField label='FIRST_NAME' />
-								<TextField label='LAST_NAME' />
+								<TextField
+									name='firstName'
+									label='FIRST_NAME'
+								/>
+								<TextField name='lastName' label='LAST_NAME' />
 								<InputPassword label='PASSWORD' />
 							</div>
 							<div className='pt-[26px] w-full'>
 								<Button
-									onClick={props.onSubmit}
+									disabled={!formState.isValid}
+									type='submit'
 									text='GET_START'
 								/>
 							</div>

@@ -116,4 +116,7 @@ export const dataLocalizeEN: Record<string, string> = {
 	SOMETHING_WERE_WRONG: 'Something were wrong!',
 	ACCOUNT_WRONG: 'Account Wrong',
 	ACCOUNT_WRONG_DES: 'Account already exists in the system',
+	DONT_RECEIVE_OTP: "Don't receive OTP",
+	RESEND_OTP: 'RESEND OTP',
+	AFTER: 'after'
 };

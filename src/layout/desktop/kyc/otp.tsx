@@ -1,11 +1,13 @@
 import LogoComponent from '@/components/ui/common/logo';
-import Button from '@/components/root/button';
 import Form from '@/components/root/form';
 import InputOTP from '@/components/root/inputs/otp';
 import Localize from '@/langs';
+import { FormDataOTPSignUp, FormDataUserSignUp } from '@/pages/kyc/signUp/types';
+import { Helper } from '@/utils/helper';
 
 interface IOTPDesktopProps {
-	onSubmit: VoidFunction;
+	onSubmit: (dataForm: FormDataOTPSignUp) => void;
+	formUsername: FormDataUserSignUp;
 }
 
 function OTPDesktop(props: IOTPDesktopProps) {
@@ -15,31 +17,20 @@ function OTPDesktop(props: IOTPDesktopProps) {
 				<div className='flex justify-center flex-col items-center '>
 					<LogoComponent />
 					<div className='mt-2 px-2 py-2 rounded-sm text-center w-full'>
-						<h4 className='font-bold text-lg'>
-							{Localize('COHESIVE_MUSIC')}
-						</h4>
+						<h4 className='font-bold text-lg'>{Localize('COHESIVE_MUSIC')}</h4>
 					</div>
 				</div>
 				<div>
 					<h4 className='text-3xl font-bold'>{Localize('OTP')}</h4>
 					<p className='text-xs pt-2'>
-						{Localize('OTP_DES')} +84 824 84**
+						{Localize('OTP_DES')} {Helper.maskEmail(props.formUsername.username)}
 					</p>
 				</div>
 				<div>
 					<Form
+						onSubmit={props.onSubmit}
 						render={() => {
-							return (
-								<div className='flex flex-col gap-12'>
-									<InputOTP numInputs={5} />
-									<div className='pt-[26px] w-full'>
-										<Button
-											onClick={props.onSubmit}
-											text='VERIFY'
-										/>
-									</div>
-								</div>
-							);
+							return <InputOTP numInputs={5} />;
 						}}
 					/>
 				</div>

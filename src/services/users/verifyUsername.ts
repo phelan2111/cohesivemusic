@@ -5,51 +5,37 @@ import { requestMiddleware } from '@/middlewares/request';
 import { Helper } from '@/utils/helper';
 import { Logger } from '@/utils/logger';
 import type { AxiosRequestConfig } from 'axios';
-import {
-	initialResponseNotData,
-	ResponseBrowser,
-	ResponseHasResponseProps,
-	ResponseNotData,
-} from '../types';
+import { initialResponseNotData, ResponseBrowser, ResponseHasResponseProps, ResponseNotData } from '../types';
 import { useState } from 'react';
 
 const config = new Config().getState();
-
-export type PayloadRegister = {
-	password: string;
-	firstName: string;
-	lastName: string;
+export type ResponseVerifyUsername = {
+	email: string;
+	token: string;
+};
+export type PayloadVerifyUsername = {
+	email: string;
 };
 
-function register({
-	defaultLoading = false,
-	defaultState = initialResponseNotData,
-	...props
-}: ResponseHasResponseProps) {
+function VerifyUsername({ defaultLoading = false, defaultState = initialResponseNotData, ...props }: ResponseHasResponseProps) {
 	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.user.register,
+		url: config.api.user.verifyUsername,
 		method: 'post',
 	};
-	const [response, setResponse] = useState<ResponseNotData>(
-		defaultState as ResponseNotData,
-	);
+	const [response, setResponse] = useState<ResponseNotData>(defaultState as ResponseNotData);
 
 	const { mutate } = requestMiddleware({
-		keyQuery: ['REGISTER'],
+		keyQuery: ['VERIFY_USERNAME'],
 		request,
 	});
 
-	const onRegister = (payload: PayloadRegister) => {
+	const onVerifyUsername = (payload: PayloadVerifyUsername) => {
 		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug(
-					'ServiceUserRegister execute handleMutate success',
-					data,
-				);
-				const funcName =
-					parseCodeToNameFunc[data.code as unknown as CODE];
+				Logger.debug('ServiceUserVerifyUsername execute handleMutate success', data);
+				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
 					props?.[funcName as string](data?.data);
@@ -58,10 +44,7 @@ function register({
 				setLoading(false);
 			},
 			onError: (error: unknown) => {
-				Logger.error(
-					'ServiceUserRegister execute handleMutate success',
-					error as object,
-				);
+				Logger.error('ServiceUserVerifyUsername execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
@@ -73,9 +56,9 @@ function register({
 			response,
 		},
 		handlerService: {
-			onRegister,
+			onVerifyUsername,
 		},
 	};
 }
 
-export default register;
+export default VerifyUsername;

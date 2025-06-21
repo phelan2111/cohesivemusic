@@ -8,7 +8,7 @@ type ViewProps = {
 function View(props: ViewProps) {
 	return (
 		<ScreenResponsive
-			mobile={() => <SignInMobile />}
+			mobile={() => <SignInMobile onLoginWithGG={props.onLoginWithGG} />}
 			desktop={() => (
 				<SignInDesktop onLoginWithGG={props.onLoginWithGG} />
 			)}

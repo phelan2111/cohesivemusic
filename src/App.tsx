@@ -8,18 +8,20 @@ import router from './routes';
 import LoaderScreen from './components/ui/loader/screen';
 import ModalProvider from './contexts/modal';
 import ToastProvider from './contexts/toast';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 function App() {
+	const queryClient = new QueryClient();
+
 	return (
 		<Provider store={store}>
 			<ModalProvider>
 				<ToastProvider>
-					<Suspense fallback={<LoaderScreen />}>
-						<RouterProvider
-							router={router}
-							fallbackElement={<>Not Founds Page</>}
-						/>
-					</Suspense>
+					<QueryClientProvider client={queryClient}>
+						<Suspense fallback={<LoaderScreen />}>
+							<RouterProvider router={router} fallbackElement={<>Not Founds Page</>} />
+						</Suspense>
+					</QueryClientProvider>
 				</ToastProvider>
 			</ModalProvider>
 		</Provider>
