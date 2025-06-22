@@ -1,5 +1,3 @@
-import React from 'react';
-
 function LoaderCapybara() {
 	return (
 		<div className='capybaraloader'>
