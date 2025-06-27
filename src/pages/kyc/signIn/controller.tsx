@@ -11,13 +11,53 @@ import { CODE } from '@/configs/responseCode';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 import { ResponseRegisterWithGG } from '@/services/types';
+import { Services } from '@/services';
+import { FormDataLogin } from './types';
+import useLoading from '@/hooks/useLoading';
+import { ResponseLogin } from '@/services/users/login';
 const config = new Config().getState();
 
 function Controller() {
 	const { onToast } = useContext(ToastContext);
 	const { redirectPage } = useRedirect();
+	const { handlerLoading, stateLoading } = useLoading({ defaultLoading: false });
+	const { handlerService } = Services.User.Login({
+		onSuccess: (dataItem: ResponseLogin) => {
+			Logger.info('SignIn Controller execute Services.User.Login');
+			Logger.debug('SignIn Controller execute Services.User.Login response', dataItem);
+			handlerLoading.onSetLoading(false);
+			handleAuth({ data: dataItem });
+		},
+		onWrongPassword: () => {
+			Logger.info('SignIn Controller execute Services.User.Login give onWrongPassword');
+			onToast({
+				theme: ToastType.error,
+				label: 'SYSTEM_ERROR',
+				content: 'WRONG_PASSWORD',
+			});
+			handlerLoading.onSetLoading(false);
+		},
+		onSystemError: () => {
+			Logger.info('SignIn Controller execute Services.User.Login give onSystemError');
+			onToast({
+				theme: ToastType.error,
+				label: 'SYSTEM_ERROR',
+				content: 'SOMETHING_WERE_WRONG',
+			});
+			handlerLoading.onSetLoading(false);
+		},
+		onHadNotExistedInSystem: () => {
+			Logger.info('SignIn Controller execute Services.User.Login give onHadNotExistedInSystem');
+			onToast({
+				theme: ToastType.error,
+				label: 'SYSTEM_ERROR',
+				content: 'USER_HAD_NOT_EXISTED_SYSTEM',
+			});
+			handlerLoading.onSetLoading(false);
+		},
+	});
 
-	const handleAuth = (response: ResponseRegisterWithGG) => {
+	const handleAuth = (response: Pick<ResponseRegisterWithGG, 'data'>) => {
 		const expireAt = dayjs().unix() * 180000;
 		AuthService.setPackageAuth(
 			{
@@ -25,10 +65,7 @@ function Controller() {
 			},
 			dayjs().unix() * 18000,
 		);
-		AuthService.setPackageProfile(
-			response?.data?.info as IProfileUser,
-			expireAt,
-		);
+		AuthService.setPackageProfile(response?.data?.info as IProfileUser, expireAt);
 		redirectPage(PATH.HOME);
 	};
 
@@ -37,10 +74,7 @@ function Controller() {
 			onError: () => {},
 			onSuccess: async (response) => {
 				Logger.info('SignUp Controller execute useGoogle');
-				Logger.debug(
-					'SignUp Controller execute useGoogle have response',
-					response,
-				);
+				Logger.debug('SignUp Controller execute useGoogle have response', response);
 
 				await axios({
 					url: `${config.api.host}${config.api.user.loginWithGG}`,
@@ -63,7 +97,12 @@ function Controller() {
 		},
 	});
 
-	return <View onLoginWithGG={handler.onLoginWithGG} />;
+	const onSubmit = (dataItem: FormDataLogin) => {
+		handlerLoading.onSetLoading(true);
+		handlerService.onLogin(dataItem);
+	};
+
+	return <View onLoginWithGG={handler.onLoginWithGG} onSubmit={onSubmit} loading={stateLoading.loading} />;
 }
 
 export default Controller;

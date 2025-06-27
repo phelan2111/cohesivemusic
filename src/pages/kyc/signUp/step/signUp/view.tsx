@@ -7,11 +7,12 @@ import Loading from '@/components/ui/loader/loading';
 
 interface IViewProps extends Pick<SubmitForm<FormDataUserSignUp>, 'onSubmit'> {
 	onSignUpWithGG: VoidFunction;
+	loading: boolean;
 }
 
 function View(props: IViewProps) {
 	return (
-		<Loading loading>
+		<Loading loading={props.loading}>
 			<ScreenResponsive mobile={() => <SignUpMobile {...props} />} desktop={() => <SignUpDesktop {...props} />} />
 		</Loading>
 	);

@@ -3,19 +3,16 @@ import Button from '@/components/root/button';
 import Form from '@/components/root/form';
 import TextField from '@/components/root/inputs/textField';
 import Localize from '@/langs';
-import { FcGoogle } from 'react-icons/fc';
-import InputPassword from '@/components/ui/input/password';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
-import { FormDataLogin } from '@/pages/kyc/signIn/types';
 import { string } from 'yup';
+import { FormDataForgot } from '@/pages/kyc/forgot/types';
 
-interface ISignInMobileProps {
-	onLoginWithGG: VoidFunction;
-	onSubmit: (dataItem: FormDataLogin) => void;
+interface IForgotMobileProps {
+	onSubmit: (dataItem: FormDataForgot) => void;
 }
 
-function SignInMobile(props: ISignInMobileProps) {
+function ForgotMobile(props: IForgotMobileProps) {
 	const { redirectPage } = useRedirect();
 	return (
 		<div className='bg-white/10 px-10 py-4 rounded-md flex-col justify-center gap-10 w-full h-screen select-none flex lg:hidden'>
@@ -26,50 +23,31 @@ function SignInMobile(props: ISignInMobileProps) {
 				</div>
 			</div>
 			<div className='animate-translateRight'>
-				<h4 className='text-3xl font-bold'>{Localize('SIGN_IN')}</h4>
-				<p className='text-xs pt-2'>{Localize('LET_GET_STARTED')} </p>
+				<h4 className='text-3xl font-bold'>{Localize('FORGOT_PASSWORD')}</h4>
+				<p className='text-xs pt-2'>{Localize('FORGOT_PASSWORD_DES')} </p>
 			</div>
 			<div className='animate-translateRight'>
-				<div
-					aria-hidden
-					onClick={props.onLoginWithGG}
-					className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
-					<FcGoogle />
-					<p className='font-medium'>{Localize('LOGIN_GOOGLE')}</p>
-				</div>
-				<p className='text-center py-3'>{Localize('OR')}</p>
 				<Form
 					onSubmit={props.onSubmit}
 					validator={{
 						email: string().required(),
-						password: string().required(),
 					}}
 					render={({ formState }) => {
 						return (
 							<div className='flex flex-col gap-4'>
 								<TextField name='email' label='USER_NAME' />
-								<InputPassword label='PASSWORD' />
-								<div className='flex justify-between items-center'>
-									<div></div>
-									<p
-										aria-hidden
-										onClick={() => redirectPage(PATH.KYC.FORGOT)}
-										className='text-xs underline cursor-pointer hover:text-white/70 transition-colors duration-300'>
-										{Localize('FORGOT_PASSWORD')}
-									</p>
-								</div>
 								<div className='pt-6 w-full'>
-									<Button disabled={!formState.isValid} text='SIGN_IN' />
+									<Button disabled={!formState.isValid} text='CONFIRM' />
 								</div>
 							</div>
 						);
 					}}
 				/>
 				<p
-					onClick={() => redirectPage(PATH.KYC.SIGN_UP)}
+					onClick={() => redirectPage(PATH.KYC.SIGN_IN)}
 					aria-hidden='true'
 					className='text-sm py-3 text-center underline cursor-pointer hover:text-white/60 transition-colors duration-300'>
-					<span>{Localize('DO_NOT_HAVE_ACCOUNT')}</span>{' '}
+					<span>{Localize('DO_HAVE_ACCOUNT')}</span>{' '}
 					<span className='text-blue-200 hover:text-inherit'>{Localize('SIGN_UP')}</span>
 				</p>
 			</div>
@@ -77,4 +55,4 @@ function SignInMobile(props: ISignInMobileProps) {
 	);
 }
 
-export default SignInMobile;
+export default ForgotMobile;

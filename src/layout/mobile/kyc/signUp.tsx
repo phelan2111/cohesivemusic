@@ -21,9 +21,7 @@ function SignUpMobile(props: ISignUpMobileProps) {
 			<div className='flex justify-center flex-col items-center animate-translateRight'>
 				<LogoComponent />
 				<div className='mt-2 px-2 py-2 rounded-sm text-center w-full'>
-					<h4 className='font-bold text-lg'>
-						{Localize('COHESIVE_MUSIC')}
-					</h4>
+					<h4 className='font-bold text-lg'>{Localize('COHESIVE_MUSIC')}</h4>
 				</div>
 			</div>
 			<div className='animate-translateRight'>
@@ -49,11 +47,7 @@ function SignUpMobile(props: ISignUpMobileProps) {
 							<div className='flex flex-col gap-4'>
 								<TextField name='username' label='USER_NAME' />
 								<div className='pt-[26px] w-full'>
-									<Button
-										disabled={!formState.isValid}
-										type='submit'
-										text='SIGN_UP'
-									/>
+									<Button disabled={!formState.isValid} type='submit' text='SIGN_UP' />
 								</div>
 							</div>
 						);
@@ -63,10 +57,8 @@ function SignUpMobile(props: ISignUpMobileProps) {
 					aria-hidden='true'
 					onClick={() => redirectPage(PATH.KYC.SIGN_IN)}
 					className='text-sm py-3 text-center underline cursor-pointer hover:text-white/60 transition-colors duration-300'>
-					<span>{Localize('DO_NOT_HAVE_ACCOUNT')}</span>{' '}
-					<span className='text-blue-200 hover:text-inherit'>
-						{Localize('SIGN_IN')}
-					</span>
+					<span>{Localize('DO_HAVE_ACCOUNT')}</span>{' '}
+					<span className='text-blue-200 hover:text-inherit'>{Localize('SIGN_IN')}</span>
 				</p>
 			</div>
 		</div>

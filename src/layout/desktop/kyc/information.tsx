@@ -42,21 +42,12 @@ function InformationSignUpDesktop(props: IInformationSignUpDesktopProps) {
 						return (
 							<div className='flex flex-col gap-12'>
 								<div className='flex flex-col gap-6'>
-									<TextField
-										name='firstName'
-										label='FIRST_NAME'
-									/>
-									<TextField
-										name='lastName'
-										label='LAST_NAME'
-									/>
+									<TextField name='firstName' label='FIRST_NAME' />
+									<TextField name='lastName' label='LAST_NAME' />
 									<InputPassword label='PASSWORD' />
 								</div>
 								<div className='pt-[26px] w-full'>
-									<Button
-										disabled={!formState.isValid}
-										text='GET_START'
-									/>
+									<Button type='submit' disabled={!formState.isValid} text='GET_START' />
 								</div>
 							</div>
 						);

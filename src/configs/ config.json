@@ -4,7 +4,12 @@
         "user": {
             "register": "/user/register",
             "loginWithGG": "/user/loginWithGoogle",
-            "verifyUsername": "/user/verifyUsername"
+            "verifyUsername": "/user/verifyUsername",
+            "verifyOTP": "/user/verifyOTP",
+            "resendOTP": "/user/resendOTP",
+            "login": "/user/login",
+            "forgot": "/user/forgot",
+            "reset": "/user/reset"
         }
     },
     "clientId": "1044167993607-jt9ba2dqtc24e32d20e5o17o2k7bo13t.apps.googleusercontent.com",

@@ -30,6 +30,9 @@ function register({
 	const request: AxiosRequestConfig = {
 		url: config.api.user.register,
 		method: 'post',
+		headers: {
+			token: props?.token,
+		},
 	};
 	const [response, setResponse] = useState<ResponseNotData>(
 		defaultState as ResponseNotData,

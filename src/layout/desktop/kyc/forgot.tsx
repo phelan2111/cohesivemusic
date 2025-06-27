@@ -2,20 +2,17 @@ import Button from '@/components/root/button';
 import Form from '@/components/root/form';
 import TextField from '@/components/root/inputs/textField';
 import LogoComponent from '@/components/ui/common/logo';
-import InputPassword from '@/components/ui/input/password';
 import { useRedirect } from '@/hooks/useRedirect';
 import Localize from '@/langs';
-import { FormDataLogin } from '@/pages/kyc/signIn/types';
+import { FormDataForgot } from '@/pages/kyc/forgot/types';
 import { PATH } from '@/routes/config';
-import { FcGoogle } from 'react-icons/fc';
 import { string } from 'yup';
 
-type SignInDesktopProps = {
-	onLoginWithGG: VoidFunction;
-	onSubmit: (dataItem: FormDataLogin) => void;
+type ForgotDesktopProps = {
+	onSubmit: (dataItem: FormDataForgot) => void;
 };
 
-function SignInDesktop(props: SignInDesktopProps) {
+function ForgotDesktop(props: ForgotDesktopProps) {
 	const { redirectPage } = useRedirect();
 	return (
 		<div className='hidden lg:flex m-auto p-6 relative z-10 w-full h-full'>
@@ -25,38 +22,19 @@ function SignInDesktop(props: SignInDesktopProps) {
 						<LogoComponent />
 					</div>
 					<div className='flex flex-col gap-1'>
-						<h4 className='text-xl uppercase font-semibold'>{Localize('SIGN_IN')}</h4>
-						<p className='text-sm'>{Localize('LET_GET_STARTED')}</p>
+						<h4 className='text-xl uppercase font-semibold'>{Localize('FORGOT_PASSWORD')}</h4>
+						<p className='text-sm'>{Localize('FORGOT_PASSWORD_DES')}</p>
 					</div>
 					<div>
-						<div
-							aria-hidden
-							onClick={props.onLoginWithGG}
-							className='border-white border flex items-center cursor-pointer hover:text-primary_dark hover:bg-white/80 transition-colors duration-500 gap-2 justify-center py-3 rounded-sm m-auto'>
-							<FcGoogle />
-							<p className='font-medium'>{Localize('LOGIN_GOOGLE')}</p>
-						</div>
-						<p className='text-center py-3'>{Localize('OR')}</p>
 						<Form
 							onSubmit={props.onSubmit}
 							validator={{
 								email: string().required(),
-								password: string().required(),
 							}}
 							render={({ formState }) => {
 								return (
 									<div className='flex flex-col gap-4'>
 										<TextField name='email' label='USER_NAME' />
-										<InputPassword label='PASSWORD' />
-										<div className='flex justify-between items-center'>
-											<div></div>
-											<p
-												aria-hidden
-												onClick={() => redirectPage(PATH.KYC.FORGOT)}
-												className='text-xs underline cursor-pointer hover:text-white/70 transition-colors duration-300'>
-												{Localize('FORGOT_PASSWORD')}
-											</p>
-										</div>
 										<div className='pt-6 w-full'>
 											<Button disabled={!formState.isValid} type='submit' text='SIGN_IN' />
 										</div>
@@ -65,10 +43,10 @@ function SignInDesktop(props: SignInDesktopProps) {
 							}}
 						/>
 						<p
-							onClick={() => redirectPage(PATH.KYC.SIGN_UP)}
+							onClick={() => redirectPage(PATH.KYC.SIGN_IN)}
 							aria-hidden='true'
 							className='text-sm py-3 text-center underline cursor-pointer hover:text-white/60 transition-colors duration-300'>
-							<span>{Localize('DO_NOT_HAVE_ACCOUNT')}</span>{' '}
+							<span>{Localize('DO_HAVE_ACCOUNT')}</span>{' '}
 							<span className='text-blue-200 hover:text-inherit'>{Localize('SIGN_UP')}</span>
 						</p>
 					</div>
@@ -78,4 +56,4 @@ function SignInDesktop(props: SignInDesktopProps) {
 	);
 }
 
-export default SignInDesktop;
+export default ForgotDesktop;

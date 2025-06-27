@@ -9,39 +9,45 @@ import { initialResponseNotData, ResponseBrowser, ResponseHasResponseProps, Resp
 import { useState } from 'react';
 
 const config = new Config().getState();
-export type ResponseVerifyUsername = {
+export type ResponseVerifyOTP = {
 	email: string;
 	token: string;
 };
-export type PayloadVerifyUsername = {
-	email: string;
+export type PayloadVerifyOTP = {
+	otp: string;
 };
 
-function VerifyUsername({ defaultLoading = false, defaultState = initialResponseNotData, ...props }: ResponseHasResponseProps) {
+function VerifyOTP({ defaultLoading = false, defaultState = initialResponseNotData, ...props }: ResponseHasResponseProps) {
+	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.user.verifyUsername,
+		url: config.api.user.verifyOTP,
 		method: 'post',
+		headers: {
+			token: props?.token,
+		},
 	};
 	const [response, setResponse] = useState<ResponseNotData>(defaultState as ResponseNotData);
 
 	const { mutate } = requestMiddleware({
-		keyQuery: ['VERIFY_USERNAME'],
+		keyQuery: ['VERIFY_OTP'],
 		request,
 	});
 
-	const onVerifyUsername = (payload: PayloadVerifyUsername) => {
+	const onVerifyOTP = (payload: PayloadVerifyOTP) => {
+		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug('ServiceUserVerifyUsername execute handleMutate success', data);
+				Logger.debug('ServiceUserVerifyOTP execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
 					props?.[funcName as string](data?.data);
 				}
 				setResponse(data.data as ResponseNotData);
+				setLoading(false);
 			},
 			onError: (error: unknown) => {
-				Logger.error('ServiceUserVerifyUsername execute handleMutate success', error as object);
+				Logger.error('ServiceUserVerifyOTP execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
@@ -49,12 +55,13 @@ function VerifyUsername({ defaultLoading = false, defaultState = initialResponse
 
 	return {
 		variable: {
+			loading,
 			response,
 		},
 		handlerService: {
-			onVerifyUsername,
+			onVerifyOTP,
 		},
 	};
 }
 
-export default VerifyUsername;
+export default VerifyOTP;

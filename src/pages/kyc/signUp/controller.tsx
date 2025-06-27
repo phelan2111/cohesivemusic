@@ -5,6 +5,7 @@ import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 import { Logger } from '@/utils/logger';
 import { ResponseVerifyUsername } from '@/services/users/verifyUsername';
+import { ResponseVerifyOTP } from '@/services/users/verifyOTP';
 
 export type FormState = {
 	formOTP: FormDataOTPSignUp;
@@ -13,6 +14,7 @@ export type FormState = {
 };
 export type ResponseState = {
 	responseVerify: ResponseVerifyUsername;
+	verifyOTP: ResponseVerifyOTP;
 };
 const initial: FormState = {
 	formInfo: {
@@ -32,6 +34,10 @@ const initialResponse: ResponseState = {
 		email: '',
 		token: '',
 	},
+	verifyOTP: {
+		email: '',
+		token: '',
+	},
 };
 function Controller() {
 	const [step, setStep] = useState<STEP_SIGN_UP>(STEP_SIGN_UP.USER_NAME);
@@ -41,7 +47,6 @@ function Controller() {
 
 	const onSubmitFormUser = (dataForm?: FormDataUserSignUp) => {
 		Logger.debug('Controller execute onSubmitFormUser have variable', dataForm as object);
-		setStep(STEP_SIGN_UP.VERIFY);
 		setFormState((prev) => ({
 			...prev,
 			formUsername: dataForm as FormDataUserSignUp,
@@ -50,14 +55,19 @@ function Controller() {
 	const onRequestVerifyUserSuccess = (response: ResponseVerifyUsername) => {
 		Logger.debug('Controller execute onRequestVerifyUserSuccess have variable', response as object);
 		setResponseState((prev) => ({ ...prev, responseVerify: response }));
+		setStep(STEP_SIGN_UP.VERIFY);
 	};
 	const onSubmitOTP = (dataForm?: FormDataOTPSignUp) => {
 		Logger.debug('Controller execute onSubmitOTP have variable', dataForm as object);
-		setStep(STEP_SIGN_UP.INFORMATION);
 		setFormState((prev) => ({
 			...prev,
 			formOTP: dataForm as FormDataOTPSignUp,
 		}));
+	};
+	const onRequestVerifyOTPSuccess = (response: ResponseVerifyOTP) => {
+		Logger.debug('Controller execute onRequestVerifyOTPSuccess have variable', response as object);
+		setResponseState((prev) => ({ ...prev, verifyOTP: response }));
+		setStep(STEP_SIGN_UP.INFORMATION);
 	};
 	const onSubmitInformation = (dataForm?: FormDataInformation) => {
 		Logger.debug('Controller execute onSubmitInformation have variable', dataForm as object);
@@ -65,6 +75,10 @@ function Controller() {
 			...prev,
 			formInfo: dataForm as FormDataInformation,
 		}));
+	};
+	const onRequestRegisterSuccess = () => {
+		Logger.info('Controller execute onRequestRegisterSuccess');
+		redirectPage(PATH.KYC.SIGN_IN);
 	};
 	const onLoginWithGoogleSuccess = () => {
 		Logger.info('Controller execute onLoginWithGoogleSuccess have variable');
@@ -87,6 +101,8 @@ function Controller() {
 				},
 				request: {
 					onRequestVerifyUserSuccess,
+					onRequestVerifyOTPSuccess,
+					onRequestRegisterSuccess,
 				},
 			}}
 		/>

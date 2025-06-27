@@ -13,11 +13,13 @@ import { ToastContext, ToastType } from '@/contexts/toast';
 import { ResponseRegisterWithGG } from '@/services/types';
 import { FormDataUserSignUp } from '../../types';
 import { Services } from '@/services';
+import useLoading from '@/hooks/useLoading';
 const config = new Config().getState();
 
 interface IComponentProps extends ISignUpUserProps {}
 function Model(props: IComponentProps) {
 	const { onToast } = useContext(ToastContext);
+	const { handlerLoading, stateLoading } = useLoading({ defaultLoading: false });
 
 	const handleAuth = (response: ResponseRegisterWithGG) => {
 		const expireAt = dayjs().unix() * 180000;
@@ -60,16 +62,30 @@ function Model(props: IComponentProps) {
 	});
 
 	const { handlerService } = Services.User.VerifyUsername({
-		onSuccess: () => {},
+		onSuccess: (dataItem) => {
+			Logger.info('Services.User execute VerifyUsername request');
+			Logger.debug('Services.User execute VerifyUsername response', dataItem);
+			props.onRequestVerifyUserSuccess(dataItem);
+			handlerLoading.onSetLoading(false);
+		},
+		onUserExistedInSystem: () => {
+			handlerLoading.onSetLoading(false);
+			onToast({
+				theme: ToastType.error,
+				label: 'SYSTEM_ERROR',
+				content: 'USER_HAD_EXISTED',
+			});
+		},
 	});
 
 	const handleSubmit = (dataItem?: FormDataUserSignUp) => {
+		handlerLoading.onSetLoading(true);
 		handlerService.onVerifyUsername({
 			email: dataItem?.username as string,
 		});
 		props.onSubmit(dataItem);
 	};
-	return <View onSubmit={handleSubmit} onSignUpWithGG={handler.onLoginWithGG} />;
+	return <View loading={stateLoading.loading} onSubmit={handleSubmit} onSignUpWithGG={handler.onLoginWithGG} />;
 }
 
 export default Model;

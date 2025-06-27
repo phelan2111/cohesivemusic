@@ -6,6 +6,7 @@ import AuthWrapper from '@/components/ui/wrapper/auth';
 import ThemeColor from '@/components/root/themes/color';
 import PublicRoute from './public';
 import PrivateRoute from './private';
+import Reset from '@/pages/kyc/reset';
 const SignIn = lazy(() => import('@/pages/kyc/signIn'));
 const SignUp = lazy(() => import('@/pages/kyc/signUp'));
 const Home = lazy(() => import('@/pages/home'));
@@ -22,6 +23,7 @@ const ListeningHistory = lazy(() => import('@/pages/listeningHistory'));
 const Playlist = lazy(() => import('@/pages/playlist'));
 const Setting = lazy(() => import('@/pages/setting'));
 const Profile = lazy(() => import('@/pages/profile'));
+const Forgot = lazy(() => import('@/pages/kyc/forgot'));
 
 const router = createBrowserRouter([
 	{
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
 					{
 						path: PATH.KYC.SIGN_UP,
 						element: <SignUp />,
+					},
+					{
+						path: PATH.KYC.FORGOT,
+						element: <Forgot />,
+					},
+					{
+						path: PATH.KYC.RESET,
+						element: <Reset />,
 					},
 				],
 			},

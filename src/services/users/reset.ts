@@ -5,43 +5,44 @@ import { requestMiddleware } from '@/middlewares/request';
 import { Helper } from '@/utils/helper';
 import { Logger } from '@/utils/logger';
 import type { AxiosRequestConfig } from 'axios';
-import { initialResponseNotData, ResponseBrowser, ResponseHasResponseProps, ResponseNotData } from '../types';
+import { ResponseBrowser, ResponseHasResponseProps } from '../types';
 import { useState } from 'react';
 
 const config = new Config().getState();
-export type ResponseVerifyUsername = {
-	email: string;
-	token: string;
-};
-export type PayloadVerifyUsername = {
-	email: string;
+
+export type PayloadReset = {
+	password: string;
 };
 
-function VerifyUsername({ defaultLoading = false, defaultState = initialResponseNotData, ...props }: ResponseHasResponseProps) {
+function Reset({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.user.verifyUsername,
+		url: config.api.user.reset,
 		method: 'post',
+		headers: {
+			token: props?.token,
+		},
 	};
-	const [response, setResponse] = useState<ResponseNotData>(defaultState as ResponseNotData);
 
 	const { mutate } = requestMiddleware({
-		keyQuery: ['VERIFY_USERNAME'],
+		keyQuery: ['RESET'],
 		request,
 	});
 
-	const onVerifyUsername = (payload: PayloadVerifyUsername) => {
+	const onReset = (payload: PayloadReset) => {
+		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug('ServiceUserVerifyUsername execute handleMutate success', data);
+				Logger.debug('ServiceUserReset execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
 					props?.[funcName as string](data?.data);
 				}
-				setResponse(data.data as ResponseNotData);
+				setLoading(false);
 			},
 			onError: (error: unknown) => {
-				Logger.error('ServiceUserVerifyUsername execute handleMutate success', error as object);
+				Logger.error('ServiceUserReset execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
@@ -49,12 +50,12 @@ function VerifyUsername({ defaultLoading = false, defaultState = initialResponse
 
 	return {
 		variable: {
-			response,
+			loading,
 		},
 		handlerService: {
-			onVerifyUsername,
+			onReset,
 		},
 	};
 }
 
-export default VerifyUsername;
+export default Reset;

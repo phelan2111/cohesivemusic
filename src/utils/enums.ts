@@ -8,3 +8,8 @@ export enum TypeToTry {
 	single,
 	album,
 }
+
+export enum Gender {
+	female = 0,
+	male,
+}

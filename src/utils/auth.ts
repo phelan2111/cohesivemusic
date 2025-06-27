@@ -1,5 +1,6 @@
 import Config from '@/configs';
 import Cookies, { CookieSetOptions } from 'universal-cookie';
+import { Gender } from './enums';
 
 const config = new Config().getState();
 
@@ -13,8 +14,10 @@ export type IProfileUser = {
 	firstName: string;
 	lastName: string;
 	email: string;
-	cover: string;
+	cover?: string;
 	avatar?: string;
+	playlistId?: string;
+	gender?: Gender;
 };
 
 class AuthService {

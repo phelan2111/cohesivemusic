@@ -4,6 +4,7 @@ import InformationSignUp from './step/information';
 import OTPSignUp from './step/OTP';
 import { FormState, ResponseState } from './controller';
 import { ResponseVerifyUsername } from '@/services/users/verifyUsername';
+import { ResponseVerifyOTP } from '@/services/users/verifyOTP';
 
 export interface IComponentStepProps extends IViewProps {
 	step: STEP_SIGN_UP;
@@ -11,13 +12,32 @@ export interface IComponentStepProps extends IViewProps {
 function ComponentStep({ state, handler, step }: IComponentStepProps) {
 	switch (step) {
 		case STEP_SIGN_UP.VERIFY: {
-			return <OTPSignUp formUsername={state.form.formUsername} onSubmit={handler.form.onSubmitOTP} />;
+			return (
+				<OTPSignUp
+					formUsername={state.form.formUsername}
+					response={state.response}
+					onSubmit={handler.form.onSubmitOTP}
+					onRequestVerifyOTPSuccess={handler.request.onRequestVerifyOTPSuccess}
+				/>
+			);
 		}
 		case STEP_SIGN_UP.INFORMATION: {
-			return <InformationSignUp onSubmit={handler.form.onSubmitInformation} />;
+			return (
+				<InformationSignUp
+					response={state.response}
+					onSubmit={handler.form.onSubmitInformation}
+					onRequestRegisterSuccess={handler.request.onRequestRegisterSuccess}
+				/>
+			);
 		}
 		default: {
-			return <SignUpUser onSignUpWithGGSuccess={handler.form.onLoginWithGoogleSuccess} onSubmit={handler.form.onSubmitFormUser} />;
+			return (
+				<SignUpUser
+					onRequestVerifyUserSuccess={handler.request.onRequestVerifyUserSuccess}
+					onSignUpWithGGSuccess={handler.form.onLoginWithGoogleSuccess}
+					onSubmit={handler.form.onSubmitFormUser}
+				/>
+			);
 		}
 	}
 }
@@ -37,6 +57,8 @@ interface IViewProps {
 		};
 		request: {
 			onRequestVerifyUserSuccess: (request: ResponseVerifyUsername) => void;
+			onRequestVerifyOTPSuccess: (request: ResponseVerifyOTP) => void;
+			onRequestRegisterSuccess: VoidFunction;
 		};
 	};
 }

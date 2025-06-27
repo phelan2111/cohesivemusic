@@ -3,6 +3,8 @@ export const PATH = {
 		_: 'kyc',
 		SIGN_IN: '/kyc/signIn',
 		SIGN_UP: '/kyc/signUp',
+		FORGOT: '/kyc/forgot',
+		RESET: '/kyc/reset/:token',
 	},
 	HOME: '/',
 	SEARCH: '/search',

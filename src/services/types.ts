@@ -17,6 +17,11 @@ export type ResponseNotData = {
 	code: string;
 	mess: string;
 };
+export type ResponseDataNotList<T> = {
+	code: string;
+	mess: string;
+	data?: T;
+};
 export type ResponseBrowser = {
 	code: string | CODE;
 	data: unknown;
@@ -43,6 +48,10 @@ export const initialResponseRequest: ResponseRequest<unknown> = {
 	total: 0,
 };
 export const initialResponseNotData: ResponseNotData = {
+	code: CODE.success,
+	mess: 'Ok',
+};
+export const initialResponseDataNoteList: ResponseDataNotList<unknown> = {
 	code: CODE.success,
 	mess: 'Ok',
 };
