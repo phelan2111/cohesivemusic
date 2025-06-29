@@ -129,4 +129,8 @@ export const dataLocalizeEN: Record<string, string> = {
 	RESET_PASS_DES: 'Set a new password to regain access to your account.',
 	RESET_PASS_SUCCESS: 'You nailed it!',
 	RESET_PASS_SUCCESS_DES: 'Your password has been changed. Time to log in and take charge!',
+	TITLE: 'Title',
+	DATE_ADDED: 'Date added',
+	TIME: 'Time',
+	VIEWED: 'Viewed',
 };

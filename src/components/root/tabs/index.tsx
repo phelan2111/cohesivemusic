@@ -12,13 +12,9 @@ export interface ITabsProps<T> {
 export interface IItemTab<T> {
 	text: string;
 	value: T;
+	disabled?: boolean;
 }
-function Tabs({
-	className = '',
-	classNameItem = '',
-	classNameActive = '',
-	...props
-}: ITabsProps<unknown>) {
+function Tabs({ className = '', classNameItem = '', classNameActive = '', ...props }: ITabsProps<unknown>) {
 	const [tab, setTab] = useState<IItemTab<unknown>>(props.tabDefault);
 
 	const handleChangeTab = (item: IItemTab<unknown>) => {
@@ -35,6 +31,10 @@ function Tabs({
 					: `hover:bg-primary_light/10 ${classNameItem}`;
 				return (
 					<div
+						style={{
+							opacity: t.disabled ? '0.4' : '1',
+							pointerEvents: t.disabled ? 'none' : 'auto',
+						}}
 						aria-hidden
 						onClick={() => {
 							handleChangeTab(t);

@@ -16,16 +16,18 @@ function YourLibraryAlbumItem(props: IYourLibraryAlbumItemProps) {
 	const isArtist = props.isArtist === IsArtistOfYourLibrary.artists;
 
 	return (
-		<div className='flex items-center gap-4 transition-all group duration-500 translate3d-x cursor-pointer snap-start relative hover:bg-white/10 rounded-full'>
+		<div
+			style={{
+				borderRadius: !isArtist ? '8px' : '99999px',
+			}}
+			className='flex items-center gap-4 transition-all group duration-500 cursor-pointer snap-start relative hover:bg-white/10'>
 			<div
 				style={{
 					borderColor: isArtist ? 'transparent' : props.themeColor,
 				}}
 				className='relative border-b-4 w-fit'>
 				<img
-					className={`h-20 w-20 object-cover ${
-						isArtist ? 'rounded-full' : 'rounded-none'
-					} `}
+					className={`h-20 w-20 object-cover ${isArtist ? 'rounded-full' : 'rounded-none'} `}
 					src={props.image}
 					alt={props.image}
 				/>
@@ -51,9 +53,7 @@ function YourLibraryAlbumItem(props: IYourLibraryAlbumItemProps) {
 							</p>
 						</Fragment>
 					) : (
-						<p className='flex items-center text-white/70'>
-							{Localize('ARTISTS')}
-						</p>
+						<p className='flex items-center text-white/70'>{Localize('ARTISTS')}</p>
 					)}
 				</div>
 			</div>
