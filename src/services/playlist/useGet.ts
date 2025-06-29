@@ -32,7 +32,7 @@ function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 		url: config.api.playlist.get,
 		method: 'get',
 		headers: {
-			token: auth.token,
+			token: auth?.token,
 		},
 	};
 	const { mutate } = requestMiddleware({

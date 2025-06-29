@@ -3,6 +3,7 @@ import AuthService from '@/utils/auth';
 import { Helper } from '@/utils/helper';
 import { Fragment, ReactNode, useEffect } from 'react';
 import { PATH } from './config';
+import LoaderScreen from '@/components/ui/loader/screen';
 
 type PrivateRouteProps = {
 	children: ReactNode;
@@ -18,7 +19,7 @@ function PrivateRoute(props: PrivateRouteProps) {
 		}
 	}, [auth, redirectPage]);
 
-	return <Fragment>{props.children}</Fragment>;
+	return <Fragment>{!Helper.isEmpty(auth?.token) ? props.children : <LoaderScreen />}</Fragment>;
 }
 
 export default PrivateRoute;
