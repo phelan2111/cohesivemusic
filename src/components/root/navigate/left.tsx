@@ -6,10 +6,7 @@ import data from '@/layout/mobile/yourLibrary/data/data.json';
 import SearchYourLibrary from '@/components/ui/input/search/yourLibrary';
 import { LuLayoutPanelLeft } from 'react-icons/lu';
 import AnimationScale from '../animation/scale';
-import { Services } from '@/services';
 import { Skeletons } from '@/components/ui/skelentons';
-import { useEffect } from 'react';
-import AuthService from '@/utils/auth';
 
 const filter: IItemFilterChip[] = [
 	{
@@ -43,7 +40,6 @@ const filter: IItemFilterChip[] = [
 interface INavigateLeftProps {}
 
 function NavigateLeft(props: INavigateLeftProps) {
-	const auth = AuthService.getPackageProfile();
 	// const { handlerService, variable } = Services.Playlist.ByUser({ onSuccess: () => {} });
 	console.log('NavigateLeft', props);
 
