@@ -1,7 +1,7 @@
 import Localize from '@/langs';
 import { Helper } from '@/utils/helper';
 import { BsThreeDots } from 'react-icons/bs';
-import { GoPlusCircle } from 'react-icons/go';
+import AddLikeSongs from '../buttons/addLikeSongs';
 
 export interface IItemSong {
 	name: string;
@@ -42,7 +42,7 @@ function SongOfAlbum(props: ISongOfAlbumProps) {
 						</div>
 						<p>{Helper.formatNumber(item.views)}</p>
 						<div className='flex items-center gap-4'>
-							<GoPlusCircle className='opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer' />
+							<AddLikeSongs defaultLike={false} />
 							<p>
 								{Helper.convertTime(item.duration as number).minus}:{Helper.convertTime(item.duration as number).second}
 							</p>

@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { initialPlaylistDetails, ResponsePlaylistDetails } from '@/services/playlist/getDetails';
 import useLoading from '@/hooks/useLoading';
+import { useRedirect } from '@/hooks/useRedirect';
+import { PATH } from '@/routes/config';
 
 type ParamsPlaylistDetails = {
 	id: string;
@@ -18,6 +20,11 @@ function Model() {
 		},
 	});
 	const params = useParams() as ParamsPlaylistDetails;
+	const { redirectPage } = useRedirect();
+
+	const onFindSongs = () => {
+		redirectPage(PATH.SEARCH);
+	};
 
 	useEffect(() => {
 		handlerService.onGet({
@@ -30,6 +37,9 @@ function Model() {
 			state={{
 				loading: stateLoading.loading,
 				playlistDetails,
+			}}
+			handler={{
+				onFindSongs,
 			}}
 		/>
 	);

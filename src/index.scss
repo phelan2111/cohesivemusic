@@ -122,8 +122,7 @@ body {
 
 .translate3d-x {
 	@media screen and (min-width: 1024px) {
-		transform: translate3d(0%, 0%, 0) perspective(1000px) rotateY(20deg)
-			rotateX(20deg);
+		transform: translate3d(0%, 0%, 0) perspective(1000px) rotateY(20deg) rotateX(20deg);
 		&:hover {
 			transform: translate3d(0%, 0%, 0) perspective(1000px) rotate(0deg);
 		}
@@ -144,31 +143,13 @@ body {
 			content: '';
 			top: -70%;
 			z-index: 1;
-			background-image: radial-gradient(
-					circle,
-					#7d2ae8 20%,
-					transparent 20%
-				),
-				radial-gradient(
-					circle,
-					transparent 20%,
-					#7d2ae8 20%,
-					transparent 30%
-				),
-				radial-gradient(circle, #535efc 20%, transparent 20%),
-				radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-				radial-gradient(
-					circle,
-					transparent 10%,
-					#7d2ae8 15%,
-					transparent 20%
-				),
-				radial-gradient(circle, #0ec8ee 20%, transparent 20%),
-				radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-				radial-gradient(circle, #0ec8ee 20%, transparent 20%),
-				radial-gradient(circle, #0ec8ee 20%, transparent 20%);
-			background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%,
-				10% 10%, 15% 15%, 10% 10%, 18% 18%;
+			background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+				radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%),
+				radial-gradient(circle, #535efc 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+				radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+				radial-gradient(circle, #0ec8ee 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+				radial-gradient(circle, #0ec8ee 20%, transparent 20%), radial-gradient(circle, #0ec8ee 20%, transparent 20%);
+			background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
 			background-position: 50% 120%;
 			animation: greenTopBubbles 2s ease;
 		}
@@ -176,24 +157,11 @@ body {
 			content: '';
 			top: 70%;
 			z-index: 1;
-			background-image: radial-gradient(
-					circle,
-					#7d2ae8 20%,
-					transparent 20%
-				),
-				radial-gradient(circle, #535efc 20%, transparent 20%),
-				radial-gradient(
-					circle,
-					transparent 10%,
-					#7d2ae8 15%,
-					transparent 20%
-				),
-				radial-gradient(circle, #535efc 20%, transparent 20%),
-				radial-gradient(circle, #7d2ae8 20%, transparent 20%),
-				radial-gradient(circle, #535efc 20%, transparent 20%),
-				radial-gradient(circle, #7d2ae8 20%, transparent 20%);
-			background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%,
-				20% 20%, 18% 18%;
+			background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #535efc 20%, transparent 20%),
+				radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+				radial-gradient(circle, #535efc 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+				radial-gradient(circle, #535efc 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+			background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
 			background-position: 50% 0%;
 			animation: greenBottomBubbles 2s ease;
 		}
@@ -212,41 +180,35 @@ body {
 }
 @keyframes greenTopBubbles {
 	0% {
-		background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
-			40% 90%, 55% 90%, 70% 90%;
+		background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
 	}
 
 	50% {
-		background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
-			50% 50%, 65% 20%, 90% 30%;
+		background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
 	}
 
 	100% {
-		background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
-			50% 40%, 65% 10%, 90% 20%;
+		background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
 		background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
 	}
 }
 
 @keyframes greenBottomBubbles {
 	0% {
-		background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
-			70% -10%, 70% 0%;
+		background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
 	}
 
 	50% {
-		background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%,
-			95% 60%, 105% 0%;
+		background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
 	}
 
 	100% {
-		background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%,
-			95% 70%, 110% 10%;
+		background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
 		background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
 	}
 }
 
-/* From Uiverse.io by Novaxlo */ 
+/* From Uiverse.io by Novaxlo */
 .capybaraloader {
 	width: 14em;
 	height: 10em;
@@ -255,21 +217,21 @@ body {
 	--color: rgb(204, 125, 45);
 	--color2: rgb(83, 56, 28);
 	transform: scale(0.75);
-  }
-  .capybara {
+}
+.capybara {
 	width: 100%;
 	height: 7.5em;
 	position: relative;
 	z-index: 1;
-  }
-  .loader {
+}
+.loader {
 	width: 100%;
 	height: 2.5em;
 	position: relative;
 	z-index: 1;
 	overflow: hidden;
-  }
-  .capy {
+}
+.capy {
 	width: 85%;
 	height: 100%;
 	background: linear-gradient(var(--color), 90%, var(--color2));
@@ -277,8 +239,8 @@ body {
 	position: relative;
 	z-index: 1;
 	animation: movebody 1s linear infinite;
-  }
-  .capyhead {
+}
+.capyhead {
 	width: 7.5em;
 	height: 7em;
 	bottom: 0em;
@@ -289,8 +251,8 @@ body {
 	border-radius: 3.5em;
 	box-shadow: -1em 0em var(--color2);
 	animation: movebody 1s linear infinite;
-  }
-  .capyear {
+}
+.capyear {
 	width: 2em;
 	height: 2em;
 	background: linear-gradient(-45deg, var(--color), 90%, var(--color2));
@@ -300,12 +262,12 @@ body {
 	position: absolute;
 	overflow: hidden;
 	z-index: 3;
-  }
-  .capyear:nth-child(2) {
+}
+.capyear:nth-child(2) {
 	left: 5em;
 	background: linear-gradient(25deg, var(--color), 90%, var(--color2));
-  }
-  .capyear2 {
+}
+.capyear2 {
 	width: 100%;
 	height: 1em;
 	background-color: var(--color2);
@@ -314,8 +276,8 @@ body {
 	border-radius: 100%;
 	position: absolute;
 	transform: rotate(-45deg);
-  }
-  .capymouth {
+}
+.capymouth {
 	width: 3.5em;
 	height: 2em;
 	background-color: var(--color2);
@@ -327,18 +289,18 @@ body {
 	justify-content: space-around;
 	align-items: center;
 	padding: 0.5em;
-  }
-  .capylips {
+}
+.capylips {
 	width: 0.25em;
 	height: 0.75em;
 	border-radius: 100%;
 	transform: rotate(-45deg);
 	background-color: var(--color);
-  }
-  .capylips:nth-child(2) {
+}
+.capylips:nth-child(2) {
 	transform: rotate(45deg);
-  }
-  .capyeye {
+}
+.capyeye {
 	width: 2em;
 	height: 0.5em;
 	background-color: var(--color2);
@@ -347,13 +309,13 @@ body {
 	left: 1.5em;
 	border-radius: 5em;
 	transform: rotate(45deg);
-  }
-  .capyeye:nth-child(4) {
+}
+.capyeye:nth-child(4) {
 	transform: rotate(-45deg);
 	left: 5.5em;
 	width: 1.75em;
-  }
-  .capyleg {
+}
+.capyleg {
 	width: 6em;
 	height: 5em;
 	bottom: 0em;
@@ -363,8 +325,8 @@ body {
 	z-index: 2;
 	border-radius: 2em;
 	animation: movebody 1s linear infinite;
-  }
-  .capyleg2 {
+}
+.capyleg2 {
 	width: 1.75em;
 	height: 3em;
 	bottom: 0em;
@@ -375,71 +337,167 @@ body {
 	border-radius: 0.75em;
 	box-shadow: inset 0em -0.5em var(--color2);
 	animation: moveleg 1s linear infinite;
-  }
-  .capyleg2:nth-child(3) {
+}
+.capyleg2:nth-child(3) {
 	width: 1.25em;
 	left: 0.5em;
 	height: 2em;
 	animation: moveleg2 1s linear infinite 0.075s;
-  }
-  
-  @keyframes moveleg {
+}
+
+@keyframes moveleg {
 	0% {
-	  transform: rotate(-45deg) translateX(-5%);
+		transform: rotate(-45deg) translateX(-5%);
 	}
 	50% {
-	  transform: rotate(45deg) translateX(5%);
+		transform: rotate(45deg) translateX(5%);
 	}
 	100% {
-	  transform: rotate(-45deg) translateX(-5%);
+		transform: rotate(-45deg) translateX(-5%);
 	}
-  }
-  
-  @keyframes moveleg2 {
+}
+
+@keyframes moveleg2 {
 	0% {
-	  transform: rotate(45deg);
+		transform: rotate(45deg);
 	}
 	50% {
-	  transform: rotate(-45deg);
+		transform: rotate(-45deg);
 	}
 	100% {
-	  transform: rotate(45deg);
+		transform: rotate(45deg);
 	}
-  }
-  
-  @keyframes movebody {
+}
+
+@keyframes movebody {
 	0% {
-	  transform: translateX(0%);
+		transform: translateX(0%);
 	}
 	50% {
-	  transform: translateX(2%);
+		transform: translateX(2%);
 	}
 	100% {
-	  transform: translateX(0%);
+		transform: translateX(0%);
 	}
-  }
-  
-  .loaderline {
+}
+
+.loaderline {
 	width: 50em;
 	height: 0.5em;
 	border-top: 0.5em dashed var(--color2);
 	animation: moveline 10s linear infinite;
-  }
-  
-  @keyframes moveline {
+}
+
+@keyframes moveline {
 	0% {
-	  transform: translateX(0%);
-	  opacity: 0%;
+		transform: translateX(0%);
+		opacity: 0%;
 	}
 	5% {
-	  opacity: 100%;
+		opacity: 100%;
 	}
 	95% {
-	  opacity: 100%;
+		opacity: 100%;
 	}
 	100% {
-	  opacity: 0%;
-	  transform: translateX(-70%);
+		opacity: 0%;
+		transform: translateX(-70%);
 	}
-  }
-  
+}
+
+.fireworks {
+	cursor: pointer;
+	transition: all 0.2s ease;
+	&::after,
+	&::before {
+		position: absolute;
+		content: '';
+		width: 150%;
+		left: 50%;
+		height: 100%;
+		transform: translateX(-50%);
+		z-index: -1000;
+		background-repeat: no-repeat;
+	}
+}
+
+.fireworks.active {
+	&::before {
+		content: '';
+		top: -70%;
+		z-index: 1;
+		background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, transparent 20%, #7d2ae8 20%, transparent 30%), radial-gradient(circle, #535efc 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%),
+			radial-gradient(circle, #0ec8ee 20%, transparent 20%), radial-gradient(circle, #7d2ae8 20%, transparent 20%),
+			radial-gradient(circle, #0ec8ee 20%, transparent 20%), radial-gradient(circle, #0ec8ee 20%, transparent 20%);
+		background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+		background-position: 50% 120%;
+		animation: greenTopBubbles 2s ease;
+	}
+	&::after {
+		content: '';
+		top: 70%;
+		z-index: 1;
+		background-image: radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #535efc 20%, transparent 20%),
+			radial-gradient(circle, transparent 10%, #7d2ae8 15%, transparent 20%), radial-gradient(circle, #535efc 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%), radial-gradient(circle, #535efc 20%, transparent 20%),
+			radial-gradient(circle, #7d2ae8 20%, transparent 20%);
+		background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+		background-position: 50% 0%;
+		animation: greenBottomBubbles 2s ease;
+	}
+}
+
+.liked {
+	&:hover {
+		.heart {
+			animation: beat 2s infinite;
+		}
+	}
+}
+.heart {
+	width: 5em;
+	height: 5em;
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	position: relative;
+}
+
+.heart::before,
+.heart::after {
+	content: '';
+	position: absolute;
+	top: 25px;
+	width: 20px;
+	height: 30px;
+	border-radius: 5em 5em 0 0;
+	background-color: rgb(255, 255, 255);
+}
+
+.heart::before {
+	left: 40px;
+	transform: rotate(-45deg);
+	transform-origin: 0 100%;
+}
+
+.heart::after {
+	left: 20px;
+	transform: rotate(45deg);
+	transform-origin: 100% 100%;
+}
+
+@keyframes beat {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.2);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}

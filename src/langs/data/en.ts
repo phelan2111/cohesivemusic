@@ -133,4 +133,9 @@ export const dataLocalizeEN: Record<string, string> = {
 	DATE_ADDED: 'Date added',
 	TIME: 'Time',
 	VIEWED: 'Viewed',
+	SONGS: 'Songs',
+	ADD_YOUR_SONGS: 'Add your songs',
+	ADD_YOUR_SONGS_DES: 'Your playlist is empty. Start adding some tunes!',
+	FIND_SONGS: 'Find songs',
+	NEW_ARTIST: 'New Artist',
 };

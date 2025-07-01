@@ -13,3 +13,9 @@ export enum Gender {
 	female = 0,
 	male,
 }
+
+export enum StatusPlaylist {
+	hidden = 0,
+	display,
+	user,
+}

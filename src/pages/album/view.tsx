@@ -8,6 +8,9 @@ interface IViewProps {
 		playlistDetails: ResponsePlaylistDetails;
 		loading: boolean;
 	};
+	handler: {
+		onFindSongs: VoidFunction;
+	};
 }
 
 function View(props: IViewProps) {

@@ -1,10 +1,11 @@
 import ScreenResponsive from '@/components/ui/responsive/screen';
 import HomeDesktop from '@/layout/desktop/home';
 import HomeMobile from '@/layout/mobile/home';
-import { ResponseYourTopMixes } from './types';
+import { ResponseSingerNewest, ResponseYourTopMixes } from './types';
 
 interface IViewProps {
 	yourTopMixes: ResponseYourTopMixes;
+	singersNewest: ResponseSingerNewest;
 	handler: {
 		onRedirect: (path: string) => void;
 	};

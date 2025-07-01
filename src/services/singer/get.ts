@@ -6,46 +6,48 @@ import { Logger } from '@/utils/logger';
 import { CODE, parseCodeToNameFunc } from '@/configs/responseCode';
 import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
-import { StatusPlaylist } from '@/utils/enums';
 const config = new Config().getState();
 
-export type PayloadPlaylistGet = {
+export type PayloadSongsGet = {
 	limit?: number;
 	from: number;
-	status: StatusPlaylist;
 };
-export type ResponsePlaylist = {
-	playlistId: string;
-	namePlaylist: string;
-	descriptionPlaylist: string;
-	image: string;
-	userId: string;
-	updatedAt: Date;
-	createdAt: Date;
-	songs: string[];
-	viewSaves: number;
+export type ResponseSinger = {
+	createdAt: string;
+	updatedAt: string;
+	singerName: string;
+	singerAvatar: string;
+	singerCover: string[];
+	singerDescription: string;
+	followers: number;
 	status: number;
-	theme: string;
+	singerId: string;
+	socials: ItemSocials;
 };
 
-function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+export type ItemSocials = {
+	facebook: string;
+	instagram: string;
+};
+
+function Get({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.get,
+		url: config.api.singer._,
 		method: 'get',
 		headers: {
 			token: auth?.token,
 		},
 	};
 	const { mutate } = requestMiddleware({
-		keyQuery: ['PLAYLIST_GET'],
+		keyQuery: ['SONGS_GET'],
 		request,
 	});
 
-	const onGet = (payload: PayloadPlaylistGet) => {
+	const onGet = (payload: PayloadSongsGet) => {
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug('ServicePlaylistGet execute handleMutate success', data);
+				Logger.debug('ServiceSongsGet execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
@@ -53,7 +55,7 @@ function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 				}
 			},
 			onError: (error: unknown) => {
-				Logger.error('ServicePlaylistGet execute handleMutate success', error as object);
+				Logger.error('ServiceSongsGet execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
@@ -66,4 +68,4 @@ function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 	};
 }
 
-export default useGet;
+export default Get;
