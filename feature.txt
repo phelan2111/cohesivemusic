@@ -1,0 +1,6 @@
+.Outstanding feature
+
+* Music
+- Make for (someone): when system got style music of use and suggest a lot of songs. It base on listen to music habit of user (one day or one week);
+
+* Podcasts

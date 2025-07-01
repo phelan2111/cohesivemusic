@@ -1,4 +1,4 @@
-interface IVideoProps {
+interface IVoiceProps {
 	src: string;
 	track: string;
 	controls?: boolean;
@@ -6,19 +6,21 @@ interface IVideoProps {
 	mute?: boolean;
 	autoPlay?: boolean;
 }
-function Video({ autoPlay = false, ...props }: IVideoProps) {
+function Voice({ autoPlay = false, ...props }: IVoiceProps) {
 	return (
 		<video
 			id={props.id}
 			muted={props.mute}
 			autoPlay={autoPlay}
-			loop
+			style={{
+				display: 'none',
+			}}
 			className='h-full w-full object-cover rounded-lg'
 			controls={props.controls}>
-			<source src={props.src} type='video/mp4' />
+			<source src={props.src} type='video/mp3' />
 			<track src={props.track} kind='captions' />
 		</video>
 	);
 }
 
-export default Video;
+export default Voice;

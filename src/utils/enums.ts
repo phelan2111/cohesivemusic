@@ -19,3 +19,8 @@ export enum StatusPlaylist {
 	display,
 	user,
 }
+
+export enum TypeSongs {
+	mp3 = 0,
+	video,
+}

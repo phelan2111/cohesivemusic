@@ -19,7 +19,7 @@ export const dataLocalizeEN: Record<string, string> = {
 	HOME: 'Home',
 	SEARCH: 'Search',
 	YOUR_LIBRARY: 'Your library',
-	NEW_RELEASE_FROM: 'New release from',
+	NEW_RELEASE: 'New release',
 	SINGLE: 'Single',
 	YOUR_TOP_MIX: 'Your top mix',
 	YOUR_FAVORITE_ARTISTS: 'Your favorite artists',
@@ -138,4 +138,7 @@ export const dataLocalizeEN: Record<string, string> = {
 	ADD_YOUR_SONGS_DES: 'Your playlist is empty. Start adding some tunes!',
 	FIND_SONGS: 'Find songs',
 	NEW_ARTIST: 'New Artist',
+	NEW_MV_RELEASE: 'New MV release',
+	PREVIEW: 'Preview',
+	WRONG_TIME: 'Wrong time',
 };

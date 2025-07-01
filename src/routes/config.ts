@@ -37,4 +37,8 @@ export const PATH = {
 	PROFILE: '/profile',
 	ACCOUNT: '/account',
 	SUPPORT: '/support',
+	SONG: {
+		_: '/song',
+		details: '/song/:songId',
+	},
 };

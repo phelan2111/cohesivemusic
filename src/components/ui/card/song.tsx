@@ -1,5 +1,5 @@
 import Localize from '@/langs';
-import { GoDotFill, GoPlusCircle } from 'react-icons/go';
+import { GoDotFill } from 'react-icons/go';
 import { IoIosPlayCircle } from 'react-icons/io';
 
 interface ISongCardProps {
@@ -11,11 +11,7 @@ interface ISongCardProps {
 function SongCard(props: ISongCardProps) {
 	return (
 		<div className='flex bg-primary_dark-10 rounded-md overflow-hidden shadow-materialDesign'>
-			<img
-				className='h-32 w-32 min-w-32 object-cover'
-				src={props.imageSong}
-				alt={props.imageSong}
-			/>
+			<img className='h-32 w-32 min-w-32 object-cover' src={props.imageSong} alt={props.imageSong} />
 			<div className='flex flex-col justify-between p-4 w-full'>
 				<div className='flex flex-col gap-1  text-xs font-semibold'>
 					<h5>{props.nameSong}</h5>
@@ -26,7 +22,7 @@ function SongCard(props: ISongCardProps) {
 					</div>
 				</div>
 				<div className='flex justify-between items-center'>
-					<GoPlusCircle className='text-2xl hover:scale-110 transition-transform duration-300 cursor-pointer' />
+					<div></div>
 					<IoIosPlayCircle className='text-3xl hover:scale-110 transition-transform duration-300 cursor-pointer' />
 				</div>
 			</div>
