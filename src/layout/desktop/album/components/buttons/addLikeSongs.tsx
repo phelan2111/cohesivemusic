@@ -1,11 +1,14 @@
 import useLoading from '@/hooks/useLoading';
+import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 import { GoPlusCircle } from 'react-icons/go';
 import { IoMdCheckmark } from 'react-icons/io';
 
 type AddLikeSongsProps = {
 	defaultLike: boolean;
+	songId: string;
+	updateSongToPlaylist?: (dataItem: PayloadPlaylistUpdate) => void;
 };
-function AddLikeSongs({ defaultLike }: AddLikeSongsProps) {
+function AddLikeSongs({ defaultLike, ...props }: AddLikeSongsProps) {
 	const { stateLoading, handlerLoading } = useLoading({ defaultLoading: defaultLike });
 
 	return (
@@ -13,6 +16,11 @@ function AddLikeSongs({ defaultLike }: AddLikeSongsProps) {
 			aria-hidden
 			onClick={() => {
 				handlerLoading.onSetLoading(true);
+				if (!stateLoading.loading) {
+					props.updateSongToPlaylist?.({
+						songId: props.songId,
+					});
+				}
 			}}
 			className='size-6 flex items-center justify-center relative'>
 			<GoPlusCircle className='opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer' />

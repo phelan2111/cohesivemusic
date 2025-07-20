@@ -6,6 +6,7 @@ import { Logger } from '@/utils/logger';
 import { CODE, parseCodeToNameFunc } from '@/configs/responseCode';
 import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
+import { TypeSongBelongUser } from '@/utils/enums';
 const config = new Config().getState();
 
 export type PayloadPlaylistGetDetails = {
@@ -35,6 +36,7 @@ export interface SongOfPlaylist {
 	songId: string;
 	duration: number;
 	type: number;
+	isBelong?: TypeSongBelongUser;
 	singers: SingerOfPlaylist[];
 }
 

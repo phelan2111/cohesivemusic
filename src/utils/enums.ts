@@ -24,3 +24,8 @@ export enum TypeSongs {
 	mp3 = 0,
 	video,
 }
+
+export enum TypeSongBelongUser {
+	no = 0,
+	yes,
+}

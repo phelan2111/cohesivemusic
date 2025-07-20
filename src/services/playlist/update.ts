@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ResponseBrowser, ResponseHasResponseProps } from '../types';
 import Config from '@/configs';
 import { AxiosRequestConfig } from 'axios';
@@ -8,60 +9,54 @@ import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
 const config = new Config().getState();
 
-export type PayloadPlaylistGet = {
-	limit?: number;
-	from: number;
-};
-export type ResponsePlaylist = {
-	playlistId: string;
-	namePlaylist: string;
-	descriptionPlaylist: string;
-	image: string;
-	userId: string;
-	updatedAt: Date;
-	createdAt: Date;
-	songs: string[];
-	viewSaves: number;
-	status: number;
-	theme: string;
+export type PayloadPlaylistUpdate = {
+	songId: string;
+	playlistId?: string;
 };
 
-function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
+	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.get,
-		method: 'get',
+		url: config.api.playlist.update,
+		method: 'post',
 		headers: {
 			token: auth?.token,
 		},
 	};
 	const { mutate } = requestMiddleware({
-		keyQuery: ['PLAYLIST_GET'],
+		keyQuery: ['PLAYLIST_UPDATE'],
 		request,
+		
 	});
 
-	const onGet = (payload: PayloadPlaylistGet) => {
+	const onUpdate = (payload: PayloadPlaylistUpdate) => {
+		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug('ServicePlaylistGet execute handleMutate success', data);
+				Logger.debug('ServicePlaylistUpdate execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
 					props?.[funcName as string](data?.data);
 				}
+				setLoading(false);
 			},
 			onError: (error: unknown) => {
-				Logger.error('ServicePlaylistGet execute handleMutate success', error as object);
+				Logger.error('ServicePlaylistUpdate execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
 	};
 
 	return {
+		variable: {
+			loading,
+		},
 		handlerService: {
-			onGet,
+			onUpdate,
 		},
 	};
 }
 
-export default useGet;
+export default Update;

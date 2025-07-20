@@ -2,6 +2,7 @@ import ScreenResponsive from '@/components/ui/responsive/screen';
 import AlbumDesktop from '@/layout/desktop/album';
 import AlbumMobile from '@/layout/mobile/album';
 import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
+import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 
 interface IViewProps {
 	state: {
@@ -10,6 +11,7 @@ interface IViewProps {
 	};
 	handler: {
 		onFindSongs: VoidFunction;
+		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
 	};
 }
 

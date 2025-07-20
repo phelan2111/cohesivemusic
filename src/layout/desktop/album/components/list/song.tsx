@@ -2,6 +2,8 @@ import Localize from '@/langs';
 import { Helper } from '@/utils/helper';
 import { BsThreeDots } from 'react-icons/bs';
 import AddLikeSongs from '../buttons/addLikeSongs';
+import { TypeSongBelongUser } from '@/utils/enums';
+import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 
 export interface IItemSong {
 	name: string;
@@ -10,9 +12,11 @@ export interface IItemSong {
 	idSong: string;
 	views: number;
 	duration?: number;
+	isBelong?: TypeSongBelongUser;
 }
 interface ISongOfAlbumProps {
 	data: IItemSong[];
+	updateSongToPlaylist?: (dataItem: PayloadPlaylistUpdate) => void;
 }
 function SongOfAlbum(props: ISongOfAlbumProps) {
 	return (
@@ -42,7 +46,13 @@ function SongOfAlbum(props: ISongOfAlbumProps) {
 						</div>
 						<p>{Helper.formatNumber(item.views)}</p>
 						<div className='flex items-center gap-4'>
-							<AddLikeSongs defaultLike={false} />
+							<AddLikeSongs
+								updateSongToPlaylist={(dataItem) => {
+									props.updateSongToPlaylist?.(dataItem);
+								}}
+								songId={item.idSong}
+								defaultLike={item.isBelong === TypeSongBelongUser.yes}
+							/>
 							<p>
 								{Helper.convertTime(item.duration as number).minus}:{Helper.convertTime(item.duration as number).second}
 							</p>

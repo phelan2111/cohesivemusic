@@ -10,6 +10,7 @@ import { sliceToolControl } from '@/redux/slice';
 import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
 import { Skeletons } from '@/components/ui/skelentons';
 import { Others } from './components/others';
+import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 export function handleStyleViewTool() {
 	const isViewTool = sliceToolControl.useGetState().open;
 	const sliceData = isViewTool ? 5 : 7;
@@ -27,6 +28,7 @@ type AlbumDesktopProps = {
 	};
 	handler: {
 		onFindSongs: VoidFunction;
+		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
 	};
 };
 
@@ -83,8 +85,12 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 											name: s.songName,
 											singers: s.singers.map((sg) => sg.singerName),
 											views: s.views,
+											isBelong: s.isBelong,
 											duration: s.duration,
 										}))}
+										updateSongToPlaylist={(dataItem) => {
+											props.handler.updateSongToPlaylist(dataItem);
+										}}
 									/>
 								</div>
 							</article>

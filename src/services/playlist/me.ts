@@ -8,10 +8,6 @@ import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
 const config = new Config().getState();
 
-export type PayloadPlaylistGet = {
-	limit?: number;
-	from: number;
-};
 export type ResponsePlaylist = {
 	playlistId: string;
 	namePlaylist: string;
@@ -26,10 +22,10 @@ export type ResponsePlaylist = {
 	theme: string;
 };
 
-function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+function Me({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.get,
+		url: config.api.playlist.me,
 		method: 'get',
 		headers: {
 			token: auth?.token,
@@ -40,8 +36,8 @@ function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 		request,
 	});
 
-	const onGet = (payload: PayloadPlaylistGet) => {
-		mutate(payload, {
+	const onGet = () => {
+		mutate({}, {
 			onSuccess: (data: ResponseBrowser) => {
 				Logger.debug('ServicePlaylistGet execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
@@ -64,4 +60,4 @@ function useGet({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 	};
 }
 
-export default useGet;
+export default Me;
