@@ -21,7 +21,7 @@ function Model() {
 		},
 	});
 	const { handlerService: handlerServiceAdd } = Services.Playlist.Update({
-		onSuccess: (dataRes) => {},
+		onSuccess: () => {},
 	});
 
 	const params = useParams() as ParamsPlaylistDetails;

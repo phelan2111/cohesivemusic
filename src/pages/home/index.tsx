@@ -6,7 +6,7 @@ import { ResponsePlaylist } from '@/services/playlist/useGet';
 import useLoading from '@/hooks/useLoading';
 import { Services } from '@/services';
 import { ResponseSingerNewest, ResponseSongNewest, ResponseYourTopMixes } from './types';
-import { StatusPlaylist, TypeSongs } from '@/utils/enums';
+import { TypeSongs } from '@/utils/enums';
 import { ResponseSinger } from '@/services/singer/get';
 import { ResponseSong } from '@/services/songs/get';
 
@@ -27,7 +27,6 @@ function YourTopMixesResponse(): ResponseYourTopMixes {
 		handlerService.onGet({
 			from: 0,
 			limit: 6,
-			status: StatusPlaylist.display,
 		});
 	}, []);
 
