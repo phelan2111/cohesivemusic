@@ -1,6 +1,6 @@
 {
     "api": {
-        "host": "http://localhost:10000",
+        "host": "https://cohesivemusic-be.onrender.com",
         "user": {
             "register": "/user/register",
             "loginWithGG": "/user/loginWithGoogle",
