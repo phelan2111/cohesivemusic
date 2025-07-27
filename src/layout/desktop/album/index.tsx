@@ -25,10 +25,14 @@ type AlbumDesktopProps = {
 	state: {
 		playlistDetails: ResponsePlaylistDetails;
 		loading: boolean;
+		songId: string;
+		isPause: boolean;
 	};
 	handler: {
 		onFindSongs: VoidFunction;
 		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
+		playPlaylist: (songId: string) => void;
+		pausePlaylist: VoidFunction;
 	};
 };
 
@@ -77,8 +81,10 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 										</div>
 									</div>
 								</div>
-								<div className='px-3 pb-3'>
+								<div className='pb-3'>
 									<SongOfAlbum
+										pausePlaylist={props.handler.pausePlaylist}
+										playPlaylist={props.handler.playPlaylist}
 										data={props.state.playlistDetails.songs.map((s) => ({
 											idSong: s.songId,
 											image: s.image,
@@ -88,9 +94,11 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 											isBelong: s.isBelong,
 											duration: s.duration,
 										}))}
+										songId={props.state.songId}
 										updateSongToPlaylist={(dataItem) => {
 											props.handler.updateSongToPlaylist(dataItem);
 										}}
+										isPause={props.state.isPause}
 									/>
 								</div>
 							</article>

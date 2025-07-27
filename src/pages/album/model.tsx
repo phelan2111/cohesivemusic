@@ -7,6 +7,8 @@ import useLoading from '@/hooks/useLoading';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 import { PayloadPlaylistUpdate } from '@/services/playlist/update';
+import { Logger } from '@/utils/logger';
+import usePlay from '@/hooks/usePlay';
 
 type ParamsPlaylistDetails = {
 	id: string;
@@ -23,15 +25,37 @@ function Model() {
 	const { handlerService: handlerServiceAdd } = Services.Playlist.Update({
 		onSuccess: () => {},
 	});
-
 	const params = useParams() as ParamsPlaylistDetails;
 	const { redirectPage } = useRedirect();
+	const { handler, state } = usePlay();
 
 	const onFindSongs = () => {
 		redirectPage(PATH.SEARCH);
 	};
 	const updateSongToPlaylist = (dataItem: PayloadPlaylistUpdate) => {
 		handlerServiceAdd.onUpdate(dataItem);
+	};
+	const playPlaylist = (songId: string) => {
+		try {
+			Logger.info('Model execute playPlaylist');
+			Logger.debug('Model execute playPlaylist have songId', songId);
+			const playlist = playlistDetails.songs.map((i) => i.songId);
+			handler.playAlbum(songId, playlist);
+		} catch (error) {
+			Logger.debug('Model execute playPlaylist error', error as object);
+		}
+	};
+	const pausePlaylist = () => {
+		try {
+			Logger.info('Model execute pausePlaylist');
+			const audioE = document.querySelector('#toolSong') as HTMLAudioElement;
+			if (!audioE) {
+				throw new Error('Not found element');
+			}
+			handler.pause(audioE.currentTime);
+		} catch (error) {
+			Logger.debug('Model execute pausePlaylist error', error as object);
+		}
 	};
 
 	useEffect(() => {
@@ -46,10 +70,14 @@ function Model() {
 			state={{
 				loading: stateLoading.loading,
 				playlistDetails,
+				songId: state.songId,
+				isPause: state.isPlay,
 			}}
 			handler={{
 				onFindSongs,
 				updateSongToPlaylist,
+				playPlaylist,
+				pausePlaylist,
 			}}
 		/>
 	);

@@ -9,11 +9,10 @@ interface IPopoverProps {
 	className?: string;
 	renderContent?: (renderContentProps: RenderContentProps) => ReactNode;
 	renderChildren?: (renderContentProps: RenderContentProps) => ReactNode;
+	top?: string;
+	bottom?: string;
 }
-function Popover({
-	className = 'text-primary_dark rounded-sm -bottom-1 left-0',
-	...props
-}: IPopoverProps) {
+function Popover({ className = 'text-primary_dark rounded-sm -bottom-1 left-0', bottom = '0px', top = '0px', ...props }: IPopoverProps) {
 	const [open, setOpen] = useState<boolean | undefined>(undefined);
 	const ref = useRef<HTMLDivElement>(null);
 	const refPopper = useRef<HTMLDivElement>(null);
@@ -32,44 +31,41 @@ function Popover({
 
 		if (wrapperElement && element && popperElement) {
 			const rect = element.getBoundingClientRect();
-			const heightScreen = document.body.clientHeight;
-			const widthHalfScreen = document.body.clientWidth / 2;
-			const isCondition = rect.bottom > heightScreen;
+			const heightHalfScreen = wrapperElement.clientHeight / 2;
+
+			const widthHalfScreen = wrapperElement.clientWidth / 2;
+			const isCondition = rect.bottom > heightHalfScreen;
 			const isConditionLeft = rect.left > widthHalfScreen;
 
 			if (isCondition) {
-				popperElement.style.bottom = '0px';
+				popperElement.style.bottom = bottom;
 				if (open === undefined) {
-					popperElement.style.transform = `translateY(-${
-						element.clientHeight + 4
-					}px) translateX(${isConditionLeft ? '-24px' : '24px'})`;
+					popperElement.style.transform = `translateY(-${element.clientHeight + 4}px) translateX(${
+						isConditionLeft ? '-24px' : '24px'
+					})`;
 				} else {
 					if (open) {
-						popperElement.style.transform = `translateY(-${
-							element.clientHeight + 4
-						}px) translateX(0px)`;
+						popperElement.style.transform = `translateY(-${element.clientHeight + 4}px) translateX(0px)`;
 					} else {
-						popperElement.style.transform = `translateY(-${
-							element.clientHeight + 4
-						}px) translateX(${isConditionLeft ? '-24px' : '24px'})`;
+						popperElement.style.transform = `translateY(-${element.clientHeight + 4}px) translateX(${
+							isConditionLeft ? '-24px' : '24px'
+						})`;
 					}
 				}
 			} else {
-				popperElement.style.top = '0px';
+				popperElement.style.top = top;
 				if (open === undefined) {
-					popperElement.style.transform = `translateY(${
-						element.clientHeight + 4
-					}px) translateX(${isConditionLeft ? '-24px' : '24px'})`;
+					popperElement.style.transform = `translateY(${element.clientHeight + 4}px) translateX(${
+						isConditionLeft ? '-24px' : '24px'
+					})`;
 				} else {
 					if (open) {
-						popperElement.style.transform = `translateY(${
-							element.clientHeight + 4
-						}px) translateX(0px)`;
+						popperElement.style.transform = `translateY(${element.clientHeight + 4}px) translateX(0px)`;
 						popperElement.style.height = '100%';
 					} else {
-						popperElement.style.transform = `translateY(${
-							element.clientHeight + 4
-						}px) translateX(${isConditionLeft ? '-24px' : '24px'})`;
+						popperElement.style.transform = `translateY(${element.clientHeight + 4}px) translateX(${
+							isConditionLeft ? '-24px' : '24px'
+						})`;
 						popperElement.style.height = '0px';
 					}
 				}
@@ -81,11 +77,7 @@ function Popover({
 	return (
 		<div className='w-full'>
 			<div className='relative w-full' aria-hidden>
-				<div
-					ref={ref}
-					className='cursor-pointer w-full'
-					aria-hidden
-					onClick={handleOpen}>
+				<div ref={ref} className='cursor-pointer w-full' aria-hidden onClick={handleOpen}>
 					{props.children ??
 						props.renderChildren?.({
 							onClose: handleClose,
@@ -105,13 +97,7 @@ function Popover({
 					})}
 				</div>
 			</div>
-			{open && (
-				<div
-					aria-hidden
-					onClick={handleClose}
-					className='fixed z-10 bg-transparent w-screen h-screen -bottom-0 -left-0'
-				/>
-			)}
+			{open && <div aria-hidden onClick={handleClose} className='fixed z-10 bg-transparent w-screen h-screen -bottom-0 -left-0' />}
 		</div>
 	);
 }

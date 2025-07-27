@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { Logger } from '@/utils/logger';
 export enum EnumToolType {
 	nowPlayingView = 0,
 	queue,
@@ -18,7 +19,8 @@ export const toolControl = createSlice({
 	initialState,
 	reducers: {
 		onSetState: (state, action: PayloadAction<ToolControl>) => {
-			console.log('stateToolControl', state);
+			Logger.info('reduce execute toolControl');
+			Logger.debug('reduce execute toolControl have state', state);
 			return action.payload;
 		},
 	},

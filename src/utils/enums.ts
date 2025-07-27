@@ -29,3 +29,7 @@ export enum TypeSongBelongUser {
 	no = 0,
 	yes,
 }
+
+export enum LocalStorage {
+	SONG = '2zuOGXLx5a',
+}

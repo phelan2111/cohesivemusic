@@ -3,13 +3,17 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 export interface ISongState {
-	name: string;
 	isPlay: boolean;
+	playlist: string[];
+	timing: number;
+	songId: string;
 }
 
 const initialState: ISongState = {
-	name: '',
+	playlist: [],
+	timing: 0,
 	isPlay: false,
+	songId: '',
 };
 
 export const songSlice = createSlice({
@@ -23,7 +27,10 @@ export const songSlice = createSlice({
 			state.isPlay = false;
 		},
 		onSetData: (state, action: PayloadAction<ISongState>) => {
-			state.name = action.payload.name;
+			state.songId = action.payload.songId;
+			state.isPlay = action.payload.isPlay;
+			state.playlist = action.payload.playlist;
+			state.timing = action.payload.timing;
 		},
 	},
 });

@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/hooks/redux';
 import { dataToolControl, funcToolControl } from './toolControl';
 import { dataLangue, funcLangue } from './langue';
-import { dataSong } from './song';
+import { dataSong, funcSong } from './song';
 
 export const sliceToolControl = {
 	useGetState: () => useAppSelector(dataToolControl),
@@ -15,5 +15,5 @@ export const sliceLangue = {
 
 export const sliceSong = {
 	useGetState: () => useAppSelector(dataSong),
-	func: funcLangue,
+	func: funcSong,
 };

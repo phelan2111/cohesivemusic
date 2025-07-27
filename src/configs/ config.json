@@ -1,6 +1,6 @@
 {
     "api": {
-        "host": "https://cohesivemusic-be.onrender.com",
+        "host": "http://localhost:10000",
         "user": {
             "register": "/user/register",
             "loginWithGG": "/user/loginWithGoogle",
@@ -23,7 +23,9 @@
             "_": "/singer/byUserWeb"
         },
         "song": {
-            "_": "/song/byUserWeb"
+            "_": "/song/byUserWeb",
+            "details": "/song/byUserWeb/details",
+            "short": "/song/byUserWeb/short"
         }
     },
     "clientId": "1044167993607-jt9ba2dqtc24e32d20e5o17o2k7bo13t.apps.googleusercontent.com",

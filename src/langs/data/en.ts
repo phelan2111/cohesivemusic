@@ -141,4 +141,11 @@ export const dataLocalizeEN: Record<string, string> = {
 	NEW_MV_RELEASE: 'New MV release',
 	PREVIEW: 'Preview',
 	WRONG_TIME: 'Wrong time',
+	FIND_A_PLAYLIST: 'Find a playlist',
+	NEW_PLAYLIST: 'New playlist',
+	DONE: 'Done',
+	GO_TO_RADIO_SONG: 'Go to radio song',
+	GO_TO_ARTIST: 'Go to artist',
+	VIEW_CREDITS: 'View credits',
+	COPY_LINK_TO_SONG: 'Copy link to song',
 };

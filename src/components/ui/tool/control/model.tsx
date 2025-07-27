@@ -1,22 +1,42 @@
-import { Component } from 'react';
+import usePlay from '@/hooks/usePlay';
+import { ControlToolProps } from '.';
 import View from './view';
-type Props = {
-	data?: unknown;
-};
-type State = {
-	time?: number;
-};
-export default class Model extends Component<Props, State> {
-	constructor(props: Props) {
-		super(props);
-		this.state = {};
-	}
+import { Logger } from '@/utils/logger';
 
-	componentDidMount(): void {
-		console.log('componentDidMount', this.state);
-	}
+function Model(props: ControlToolProps) {
+	const { state, handler } = usePlay();
 
-	render() {
-		return <View />;
-	}
+	const play = () => {
+		try {
+			Logger.info('Tool.control execute play');
+			handler.play();
+		} catch (error) {
+			console.log('errorerrorerror', error);
+			Logger.error('Tool.control execute play error', error as object);
+		}
+	};
+	const pause = (timing: number) => {
+		try {
+			Logger.info('Tool.control execute pause');
+			handler.pause(timing);
+		} catch (error) {
+			Logger.error('Tool.control execute pause error', error as object);
+		}
+	};
+
+	return (
+		<View
+			state={{
+				link: props.data.link,
+				timeCurrent: state.timing,
+				isPlay: state.isPlay,
+			}}
+			handler={{
+				pause,
+				play,
+			}}
+		/>
+	);
 }
+
+export default Model;
