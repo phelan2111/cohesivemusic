@@ -8,15 +8,15 @@ import { LuLayoutPanelLeft } from 'react-icons/lu';
 import AnimationScale from '../animation/scale';
 import { Skeletons } from '@/components/ui/skelentons';
 import { Services } from '@/services';
-import { useEffect, useState } from 'react';
-import { initialResponseRequest, ResponseRequest } from '@/services/types';
-import { ResponsePlaylist } from '@/services/playlist/useGet';
+import { useEffect } from 'react';
 import useLoading from '@/hooks/useLoading';
 import AlbumOfMeItem from '@/components/ui/item/albumMe';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 import { useParams } from 'react-router-dom';
 import { StatusPlaylist } from '@/utils/enums';
+import { useAppDispatch } from '@/hooks/redux';
+import { sliceMe } from '@/redux/slice';
 
 const filter: IItemFilterChip[] = [
 	{
@@ -53,14 +53,12 @@ type ParamsCurrent = {
 function NavigateLeft() {
 	const { handlerLoading, stateLoading } = useLoading({ defaultLoading: true });
 	const { redirectPage } = useRedirect();
+	const dispatch = useAppDispatch();
+	const { playlistMe } = sliceMe.useGetState();
 	const params = useParams() as ParamsCurrent;
-
-	const [playlistMeResponse, setPlaylistMeResponse] = useState<ResponseRequest<ResponsePlaylist>>(
-		initialResponseRequest as ResponseRequest<ResponsePlaylist>,
-	);
 	const { handlerService } = Services.Playlist.Me({
 		onSuccess: (dataItem) => {
-			setPlaylistMeResponse(dataItem);
+			dispatch(sliceMe.func.onSetData(dataItem));
 			handlerLoading.onSetLoading(false);
 		},
 		defaultLoading: true,
@@ -92,7 +90,7 @@ function NavigateLeft() {
 					<article className='pb-4 pt-2 pr-2'>
 						<div className='flex flex-col gap-4 h-yourLibraryDk scrollHiddenY relative z-10 overflow-y-auto snap-mandatory snap-y p-4 pr-2'>
 							<Skeletons.YourLibraryAlbum loading={stateLoading.loading}>
-								{playlistMeResponse.list.map((pl) => {
+								{playlistMe.list.map((pl) => {
 									if (pl.status === StatusPlaylist.user) {
 										return (
 											<AlbumOfMeItem
@@ -107,7 +105,6 @@ function NavigateLeft() {
 									}
 									return <></>;
 								})}
-
 								{/* {data.map((i) => {
 									return <YourLibraryAlbumItem key={i.image} {...i} />;
 								})} */}

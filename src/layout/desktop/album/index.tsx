@@ -6,11 +6,13 @@ import { GoVerified } from 'react-icons/go';
 import { IoIosPlay } from 'react-icons/io';
 import SongOfAlbum from './components/list/song';
 import { sliceToolControl } from '@/redux/slice';
-// import FanAlsoLike from './components/list/fanAlsoLike';
 import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
 import { Skeletons } from '@/components/ui/skelentons';
 import { Others } from './components/others';
-import { PayloadPlaylistUpdate } from '@/services/playlist/update';
+import { ResponseRequest } from '@/services/types';
+import { ResponsePlaylist } from '@/services/playlist/me';
+import { AddNewPlaylistFunc } from '@/pages/album/types';
+import { PayloadPlaylistAdd } from '@/services/playlist/add';
 export function handleStyleViewTool() {
 	const isViewTool = sliceToolControl.useGetState().open;
 	const sliceData = isViewTool ? 5 : 7;
@@ -24,15 +26,18 @@ export function handleStyleViewTool() {
 type AlbumDesktopProps = {
 	state: {
 		playlistDetails: ResponsePlaylistDetails;
+		playlistMeResponse: ResponseRequest<ResponsePlaylist>;
 		loading: boolean;
 		songId: string;
 		isPause: boolean;
 	};
 	handler: {
 		onFindSongs: VoidFunction;
-		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
-		playPlaylist: (songId: string) => void;
 		pausePlaylist: VoidFunction;
+		addSongToPlaylist: (dataItem: PayloadPlaylistAdd) => void;
+		playPlaylist: (songId: string) => void;
+		updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
+		playlistMe: VoidFunction;
 	};
 };
 
@@ -83,8 +88,11 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 								</div>
 								<div className='pb-3'>
 									<SongOfAlbum
+										playlistMe={props.handler.playlistMe}
 										pausePlaylist={props.handler.pausePlaylist}
 										playPlaylist={props.handler.playPlaylist}
+										updateSongToPlaylist={props.handler.updateSongToPlaylist}
+										playlistMeResponse={props.state.playlistMeResponse}
 										data={props.state.playlistDetails.songs.map((s) => ({
 											idSong: s.songId,
 											image: s.image,
@@ -95,8 +103,8 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 											duration: s.duration,
 										}))}
 										songId={props.state.songId}
-										updateSongToPlaylist={(dataItem) => {
-											props.handler.updateSongToPlaylist(dataItem);
+										addSongToPlaylist={(dataItem) => {
+											props.handler.addSongToPlaylist(dataItem);
 										}}
 										isPause={props.state.isPause}
 									/>

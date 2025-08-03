@@ -9,27 +9,27 @@ import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
 const config = new Config().getState();
 
-export type PayloadPlaylistUpdate = {
+export type PayloadPlaylistAdd = {
 	songId: string;
-	playlistIds: string[];
+	playlistId?: string;
 };
 
-function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+function Add({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
 	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.update,
+		url: config.api.playlist.add,
 		method: 'post',
 		headers: {
 			token: auth?.token,
 		},
 	};
 	const { mutate } = requestMiddleware({
-		keyQuery: ['PLAYLIST_UPDATE'],
+		keyQuery: ['PLAYLIST_ADD'],
 		request,
 	});
 
-	const onRequest = (payload: PayloadPlaylistUpdate) => {
+	const onAdd = (payload: PayloadPlaylistAdd) => {
 		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
@@ -53,9 +53,9 @@ function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 			loading,
 		},
 		handlerService: {
-			onRequest,
+			onAdd,
 		},
 	};
 }
 
-export default Update;
+export default Add;

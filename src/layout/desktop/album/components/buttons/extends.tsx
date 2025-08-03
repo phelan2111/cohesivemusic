@@ -8,10 +8,10 @@ import { IoRadioOutline } from 'react-icons/io5';
 function Extends() {
 	return (
 		<Popover
-		bottom='10px'
+			bottom='10px'
 			className='text-primary_dark rounded-sm right-44'
-			renderChildren={() => (
-				<div>
+			renderChildren={({ onOpen }) => (
+				<div aria-hidden onClick={onOpen}>
 					<BsThreeDots className='opacity-0 group-hover:opacity-100 transition-opacity duration-500 cursor-pointer' />
 				</div>
 			)}

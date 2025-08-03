@@ -148,4 +148,5 @@ export const dataLocalizeEN: Record<string, string> = {
 	GO_TO_ARTIST: 'Go to artist',
 	VIEW_CREDITS: 'View credits',
 	COPY_LINK_TO_SONG: 'Copy link to song',
+	NOTHING: 'nothing',
 };

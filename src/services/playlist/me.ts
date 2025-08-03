@@ -11,16 +11,30 @@ const config = new Config().getState();
 export type ResponsePlaylist = {
 	playlistId: string;
 	namePlaylist: string;
-	descriptionPlaylist: string;
 	image: string;
 	userId: string;
-	updatedAt: Date;
-	createdAt: Date;
-	songs: string[];
+	songs: SongOfPlaylistsMe[];
 	viewSaves: number;
 	status: number;
 	theme: string;
 };
+export interface SongOfPlaylistsMe {
+	songName: string;
+	image: string;
+	link: string;
+	songId: string;
+	type: number;
+	duration: number;
+	singers: SingerOfPlaylistsMe[];
+}
+export interface SingerOfPlaylistsMe {
+	singerName: string;
+	singerAvatar: string;
+	singerId: string;
+	status: number;
+	followers: number;
+}
+
 
 function Me({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();

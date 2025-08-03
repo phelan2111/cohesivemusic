@@ -6,15 +6,21 @@ import { initialPlaylistDetails, ResponsePlaylistDetails } from '@/services/play
 import useLoading from '@/hooks/useLoading';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
-import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 import { Logger } from '@/utils/logger';
 import usePlay from '@/hooks/usePlay';
+import { AddNewPlaylistFunc } from './types';
+import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { useDispatch } from 'react-redux';
+import { sliceMe } from '@/redux/slice';
 
 type ParamsPlaylistDetails = {
 	id: string;
 };
 function Model() {
 	const [playlistDetails, setPlaylistDetails] = useState<ResponsePlaylistDetails>(initialPlaylistDetails);
+	const dispatch = useDispatch();
+	const { playlistMe } = sliceMe.useGetState();
+
 	const { handlerLoading, stateLoading } = useLoading({ defaultLoading: true });
 	const { handlerService } = Services.Playlist.Details({
 		onSuccess: (dataRes) => {
@@ -22,18 +28,38 @@ function Model() {
 			handlerLoading.onSetLoading(false);
 		},
 	});
-	const { handlerService: handlerServiceAdd } = Services.Playlist.Update({
-		onSuccess: () => {},
+	const { handlerService: handlerServiceAdd } = Services.Playlist.Add({
+		onSuccess: () => {
+			Logger.info('Model execute Services.Playlist.Add');
+			playlistMeFunc();
+		},
 	});
+	const { handlerService: handlerServiceUpdate } = Services.Playlist.Update({
+		onSuccess: () => {
+			Logger.info('Model execute Services.Playlist.Update');
+			playlistMeFunc();
+		},
+	});
+	const { handlerService: handlerServicesPlaylistMe } = Services.Playlist.Me({
+		onSuccess: (dataItem) => {
+			Logger.info('Model execute Services.Playlist.Me');
+			dispatch(sliceMe.func.onSetData(dataItem));
+		},
+		defaultLoading: true,
+	});
+
 	const params = useParams() as ParamsPlaylistDetails;
 	const { redirectPage } = useRedirect();
 	const { handler, state } = usePlay();
 
 	const onFindSongs = () => {
+		Logger.info('Model execute onFindSongs');
 		redirectPage(PATH.SEARCH);
 	};
-	const updateSongToPlaylist = (dataItem: PayloadPlaylistUpdate) => {
-		handlerServiceAdd.onUpdate(dataItem);
+	const addSongToPlaylist = (dataItem: PayloadPlaylistAdd) => {
+		Logger.info('Model execute updateSongToPlaylist');
+		Logger.debug('Model execute playPlaylist have data song', dataItem);
+		handlerServiceAdd.onAdd(dataItem);
 	};
 	const playPlaylist = (songId: string) => {
 		try {
@@ -57,13 +83,27 @@ function Model() {
 			Logger.debug('Model execute pausePlaylist error', error as object);
 		}
 	};
-
-	useEffect(() => {
-		handlerLoading.onSetLoading(true);
+	const updateSongToPlaylist = (dataItem: AddNewPlaylistFunc) => {
+		Logger.info('Model execute addNewPlaylist');
+		Logger.debug('Model execute addNewPlaylist have dataItem:', dataItem);
+		handlerServiceUpdate.onRequest({
+			playlistIds: dataItem.playlistId,
+			songId: dataItem.songId,
+		});
+	};
+	const playlistMeFunc = () => {
+		handlerServicesPlaylistMe.onGet();
 		handlerService.onGet({
 			playlistId: params.id,
 		});
+	};
+
+	useEffect(() => {
+		handlerLoading.onSetLoading(true);
 	}, [params]);
+	useEffect(() => {
+		playlistMeFunc();
+	}, []);
 
 	return (
 		<View
@@ -72,12 +112,15 @@ function Model() {
 				playlistDetails,
 				songId: state.songId,
 				isPause: state.isPlay,
+				playlistMeResponse: playlistMe,
 			}}
 			handler={{
 				onFindSongs,
-				updateSongToPlaylist,
 				playPlaylist,
 				pausePlaylist,
+				updateSongToPlaylist,
+				addSongToPlaylist,
+				playlistMe: playlistMeFunc,
 			}}
 		/>
 	);

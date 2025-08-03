@@ -2,20 +2,26 @@ import ScreenResponsive from '@/components/ui/responsive/screen';
 import AlbumDesktop from '@/layout/desktop/album';
 import AlbumMobile from '@/layout/mobile/album';
 import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
-import { PayloadPlaylistUpdate } from '@/services/playlist/update';
+import { ResponsePlaylist } from '@/services/playlist/me';
+import { ResponseRequest } from '@/services/types';
+import { AddNewPlaylistFunc } from './types';
+import { PayloadPlaylistAdd } from '@/services/playlist/add';
 
 interface IViewProps {
 	state: {
 		playlistDetails: ResponsePlaylistDetails;
+		playlistMeResponse: ResponseRequest<ResponsePlaylist>;
 		loading: boolean;
 		songId: string;
 		isPause: boolean;
 	};
 	handler: {
 		onFindSongs: VoidFunction;
-		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
+		addSongToPlaylist: (dataItem: PayloadPlaylistAdd) => void;
 		playPlaylist: (songId: string) => void;
 		pausePlaylist: VoidFunction;
+		updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
+		playlistMe: VoidFunction;
 	};
 }
 

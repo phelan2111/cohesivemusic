@@ -1,5 +1,5 @@
 import Localize from '@/langs';
-import { ResponsePlaylist } from '@/services/playlist/useGet';
+import { ResponsePlaylist } from '@/services/playlist/me';
 import { LuDot } from 'react-icons/lu';
 
 interface IAlbumOfMeItemProps {

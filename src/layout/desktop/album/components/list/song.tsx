@@ -2,10 +2,13 @@ import Localize from '@/langs';
 import { Helper } from '@/utils/helper';
 import AddLikeSongs from '../buttons/addLikeSongs';
 import { TypeSongBelongUser } from '@/utils/enums';
-import { PayloadPlaylistUpdate } from '@/services/playlist/update';
 import Extends from '../buttons/extends';
 import { FaPause, FaPlay } from 'react-icons/fa6';
 import LoaderPreviewMV from '@/components/ui/loader/previewMV';
+import { ResponseRequest } from '@/services/types';
+import { ResponsePlaylist } from '@/services/playlist/me';
+import { AddNewPlaylistFunc } from '@/pages/album/types';
+import { PayloadPlaylistAdd } from '@/services/playlist/add';
 
 export interface IItemSong {
 	name: string;
@@ -20,9 +23,12 @@ interface ISongOfAlbumProps {
 	data: IItemSong[];
 	songId: string;
 	isPause: boolean;
-	updateSongToPlaylist?: (dataItem: PayloadPlaylistUpdate) => void;
+	addSongToPlaylist?: (dataItem: PayloadPlaylistAdd) => void;
+	playlistMeResponse: ResponseRequest<ResponsePlaylist>;
 	playPlaylist: (songId: string) => void;
+	updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
 	pausePlaylist: VoidFunction;
+	playlistMe: VoidFunction;
 }
 function SongOfAlbum(props: ISongOfAlbumProps) {
 	return (
@@ -38,7 +44,6 @@ function SongOfAlbum(props: ISongOfAlbumProps) {
 			{props.data.map((item, index) => {
 				const isPlayThisSong = item.idSong === props.songId;
 				const isPlay = isPlayThisSong && props.isPause;
-
 				return (
 					<div
 						className={`flex justify-between group items-center hover:bg-primary_light/10 p-3 rounded-xl transition-all duration-500 cursor-pointer ${
@@ -70,9 +75,12 @@ function SongOfAlbum(props: ISongOfAlbumProps) {
 						<p>{Helper.formatNumber(item.views)}</p>
 						<div className='flex items-center gap-4'>
 							<AddLikeSongs
-								updateSongToPlaylist={(dataItem) => {
-									props.updateSongToPlaylist?.(dataItem);
+								getPlaylistMe={props.playlistMe}
+								playlistMeResponse={props.playlistMeResponse}
+								addSongToPlaylist={(dataItem) => {
+									props.addSongToPlaylist?.(dataItem);
 								}}
+								updateSongToPlaylist={props.updateSongToPlaylist}
 								songId={item.idSong}
 								defaultLike={item.isBelong === TypeSongBelongUser.yes}
 							/>

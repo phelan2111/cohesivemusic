@@ -1,9 +1,18 @@
 import Button from '@/components/root/button';
+import Empty from '@/components/root/empty';
 import TextField from '@/components/root/inputs/textField';
 import Popover from '@/components/root/popper';
+import LoaderAstronaut from '@/components/ui/loader/astronaut';
+import { useDebounce } from '@/hooks/useDebounce';
 import useLoading from '@/hooks/useLoading';
 import Localize from '@/langs';
-import { PayloadPlaylistUpdate } from '@/services/playlist/update';
+import { AddNewPlaylistFunc } from '@/pages/album/types';
+import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { ResponsePlaylist } from '@/services/playlist/me';
+import { ResponseRequest } from '@/services/types';
+import { StatusPlaylist } from '@/utils/enums';
+import { Helper } from '@/utils/helper';
+import { useEffect, useMemo, useState } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 import { GoPlusCircle } from 'react-icons/go';
 import { IoMdCheckmark } from 'react-icons/io';
@@ -12,7 +21,10 @@ import { TiPin } from 'react-icons/ti';
 type AddLikeSongsProps = {
 	defaultLike: boolean;
 	songId: string;
-	updateSongToPlaylist?: (dataItem: PayloadPlaylistUpdate) => void;
+	addSongToPlaylist?: (dataItem: PayloadPlaylistAdd) => void;
+	updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
+	playlistMeResponse: ResponseRequest<ResponsePlaylist>;
+	getPlaylistMe: VoidFunction;
 };
 
 type CheckIconProps = {
@@ -39,120 +51,158 @@ function CheckIcon(props: CheckIconProps) {
 		</div>
 	);
 }
+let timer: number;
 function AddLikeSongs({ defaultLike, ...props }: AddLikeSongsProps) {
 	const { stateLoading, handlerLoading } = useLoading({ defaultLoading: defaultLike });
+	const [playlistOfSong, setPlaylistOfSong] = useState<string[]>([]);
+	const [searchValue, setSearchValue] = useState<string>('');
+	const value = useDebounce(searchValue);
+
+	const isDirty = useMemo(() => {
+		const playlistRecent = props.playlistMeResponse.list.filter((pl) => {
+			const { isExist } = Helper.findItem(pl.songs as never[], 'songId', props.songId);
+			return isExist;
+		});
+		const playlistIdRecent = playlistRecent.map((pl) => pl.playlistId);
+		return Helper.deepEqual(playlistIdRecent as never, playlistOfSong as never);
+	}, [playlistOfSong]);
+	const playlistCurrent = useMemo(() => {
+		return props.playlistMeResponse.list.filter((pl) => {
+			const clearText = Helper.removeVietnameseTones(value);
+			const keywordParts = clearText.split(/\s+/);
+			const clearPlaylistName = Helper.removeVietnameseTones(pl.namePlaylist);
+			return keywordParts.every((part) => clearPlaylistName.includes(part));
+		});
+	}, [value, props.playlistMeResponse]);
+
+	const createInitialState = () => {
+		if (!Helper.isEmpty(props.playlistMeResponse.list)) {
+			const playlistRecent = props.playlistMeResponse.list.filter((pl) => {
+				const { isExist } = Helper.findItem(pl.songs as never[], 'songId', props.songId);
+				return isExist;
+			});
+			const playlistIdRecent = playlistRecent.map((pl) => pl.playlistId);
+			setPlaylistOfSong(playlistIdRecent);
+		}
+	};
+	const timerFuncCreateInitialState = () => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			createInitialState();
+		}, 500) as never;
+	};
+
+	useEffect(() => {
+		createInitialState();
+	}, [props.playlistMeResponse]);
+	useEffect(() => {
+		handlerLoading.onSetLoading(defaultLike);
+	}, [defaultLike]);
 
 	return (
 		<Popover
 			bottom='10px'
+			onCloseByBlur={() => {
+				timerFuncCreateInitialState();
+			}}
 			className='text-primary_dark rounded-sm right-52'
 			renderContent={({ onClose }) => {
-				if (!stateLoading.loading) return <></>;
 				return (
 					<div className='bg-primary_dark-20 rounded-lg flex flex-col gap-3 w-64 text-white'>
 						<div className='flex flex-col gap-2 px-4 pt-4'>
 							<p className='text-sm'>{Localize('ADD_TO_PLAYLIST')}</p>
-							<TextField classNameInput='h-7 text-xs' placeholder={Localize('FIND_A_PLAYLIST')} />
+							<TextField
+								onChange={(dataItem) => {
+									setSearchValue(dataItem);
+								}}
+								classNameInput='h-7 text-xs'
+								placeholder={Localize('FIND_A_PLAYLIST')}
+							/>
 						</div>
 						<div className='flex items-center gap-1 text-sm border-b px-4 border-primary_dark-10 pb-2'>
 							<FaPlus />
 							<p>{Localize('NEW_PLAYLIST')}</p>
 						</div>
 						<div className='h-[156px] overflow-y-auto px-4 scrollHiddenY'>
-							<div className='flex items-center gap-2 justify-between hover:bg-primary_dark-10 p-2 rounded-md transition-all duration-300'>
-								<div className='flex items-center gap-1'>
-									<div>
-										<figure>
-											<img
-												className='size-10 object-cover rounded-sm'
-												src='https://i.pinimg.com/736x/69/d4/f5/69d4f553a801270cc080e78402855353.jpg'
-												alt=''
-											/>
-										</figure>
-									</div>
-									<p className='text-sm font-medium'>Liked Song</p>
-								</div>
-								<div className='flex items-center gap-2'>
-									<TiPin className='text-xl' />
-									<CheckIcon checked onClick={() => {}} />
-								</div>
-							</div>
-							<div className='flex items-center gap-2 justify-between hover:bg-primary_dark-10 p-2 rounded-md transition-all duration-300'>
-								<div className='flex items-center gap-1'>
-									<div>
-										<figure>
-											<img
-												className='size-10 object-cover rounded-sm'
-												src='https://i.pinimg.com/736x/69/d4/f5/69d4f553a801270cc080e78402855353.jpg'
-												alt=''
-											/>
-										</figure>
-									</div>
-									<p className='text-sm font-medium'>Liked Song</p>
-								</div>
-								<div className='flex items-center gap-2'>
-									<TiPin className='text-xl' />
-									<CheckIcon checked onClick={() => {}} />
-								</div>
-							</div>
-							<div className='flex items-center gap-2 justify-between hover:bg-primary_dark-10 p-2 rounded-md transition-all duration-300'>
-								<div className='flex items-center gap-1'>
-									<div>
-										<figure>
-											<img
-												className='size-10 object-cover rounded-sm'
-												src='https://i.pinimg.com/736x/69/d4/f5/69d4f553a801270cc080e78402855353.jpg'
-												alt=''
-											/>
-										</figure>
-									</div>
-									<p className='text-sm font-medium'>Liked Song</p>
-								</div>
-								<div className='flex items-center gap-2'>
-									<TiPin className='text-xl' />
-									<CheckIcon checked onClick={() => {}} />
-								</div>
-							</div>
-							<div className='flex items-center gap-2 justify-between hover:bg-primary_dark-10 p-2 rounded-md transition-all duration-300'>
-								<div className='flex items-center gap-1'>
-									<div>
-										<figure>
-											<img
-												className='size-10 object-cover rounded-sm'
-												src='https://i.pinimg.com/736x/69/d4/f5/69d4f553a801270cc080e78402855353.jpg'
-												alt=''
-											/>
-										</figure>
-									</div>
-									<p className='text-sm font-medium'>Liked Song</p>
-								</div>
-								<div className='flex items-center gap-2'>
-									<TiPin className='text-xl' />
-									<CheckIcon checked onClick={() => {}} />
-								</div>
-							</div>
+							<Empty isEmpty={Helper.isEmpty(playlistCurrent)} emptyComp={<LoaderAstronaut />}>
+								{playlistCurrent.map((pl) => {
+									const index = playlistOfSong.findIndex((pc) => pc === pl.playlistId);
+									const isExist = index !== -1;
+
+									return (
+										<div
+											key={pl.playlistId}
+											className='flex items-center gap-2 justify-between hover:bg-primary_dark-10 p-2 rounded-md transition-all duration-300'>
+											<div className='flex items-center gap-1'>
+												<div>
+													<figure>
+														<img
+															className='size-10 object-cover rounded-sm'
+															src={pl.image}
+															alt={pl.namePlaylist}
+														/>
+													</figure>
+												</div>
+												<p className='text-sm font-medium'>{pl.namePlaylist}</p>
+											</div>
+											<div className='flex items-center gap-2'>
+												{pl.status === StatusPlaylist.user && <TiPin className='text-xl' />}
+												<CheckIcon
+													checked={isExist}
+													onClick={() => {
+														let freshState = [...playlistOfSong];
+														if (isExist) {
+															freshState.splice(index, 1);
+														} else {
+															freshState = [...freshState, pl.playlistId];
+														}
+														setPlaylistOfSong(freshState);
+													}}
+												/>
+											</div>
+										</div>
+									);
+								})}
+							</Empty>
 						</div>
 						<div
 							style={{
 								boxShadow: '-0px -4px 4px -3px #ffffff10',
 							}}
 							className='shadow-red-100 w-full py-3 px-4 flex justify-end gap-2'>
-							<Button onClick={onClose} className='h-8 px-2 text-sm w-20 !bg-transparent'>
+							<Button
+								onClick={() => {
+									onClose();
+									timerFuncCreateInitialState();
+								}}
+								className='h-8 px-2 text-sm w-20 !bg-transparent'>
 								{Localize('CANCEL')}
 							</Button>
-							<Button className='h-8 px-2 text-sm w-20'>{Localize('DONE')}</Button>
+							<Button
+								disabled={isDirty}
+								onClick={() => {
+									onClose();
+									timerFuncCreateInitialState();
+									props.updateSongToPlaylist({ playlistId: playlistOfSong, songId: props.songId });
+								}}
+								className='h-8 px-2 text-sm w-20'>
+								{Localize('DONE')}
+							</Button>
 						</div>
 					</div>
 				);
 			}}
-			renderChildren={() => {
+			renderChildren={({ onOpen }) => {
 				return (
 					<CheckIcon
 						checked={stateLoading.loading}
 						onClick={() => {
 							handlerLoading.onSetLoading(true);
+							if (stateLoading.loading) {
+								onOpen();
+							}
 							if (!stateLoading.loading) {
-								props.updateSongToPlaylist?.({
+								props.addSongToPlaylist?.({
 									songId: props.songId,
 								});
 							}

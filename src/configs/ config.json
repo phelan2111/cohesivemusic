@@ -16,6 +16,7 @@
             "details": "/playlist/getFromUserWebDetails",
             "byUser": "/playlist/byUser",
             "get": "/playlist/getFromUserWeb",
+            "add": "/playlist/getFromUserWeb/add",
             "update": "/playlist/getFromUserWeb/update",
             "me": "/playlist/me"
         },

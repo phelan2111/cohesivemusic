@@ -7,6 +7,7 @@ type RenderContentProps = {
 interface IPopoverProps {
 	children?: ReactNode;
 	className?: string;
+	onCloseByBlur?: VoidFunction;
 	renderContent?: (renderContentProps: RenderContentProps) => ReactNode;
 	renderChildren?: (renderContentProps: RenderContentProps) => ReactNode;
 	top?: string;
@@ -77,7 +78,15 @@ function Popover({ className = 'text-primary_dark rounded-sm -bottom-1 left-0', 
 	return (
 		<div className='w-full'>
 			<div className='relative w-full' aria-hidden>
-				<div ref={ref} className='cursor-pointer w-full' aria-hidden onClick={handleOpen}>
+				<div
+					ref={ref}
+					className='cursor-pointer w-full'
+					aria-hidden
+					onClick={() => {
+						if (!props.renderChildren) {
+							handleOpen();
+						}
+					}}>
 					{props.children ??
 						props.renderChildren?.({
 							onClose: handleClose,
@@ -97,7 +106,16 @@ function Popover({ className = 'text-primary_dark rounded-sm -bottom-1 left-0', 
 					})}
 				</div>
 			</div>
-			{open && <div aria-hidden onClick={handleClose} className='fixed z-10 bg-transparent w-screen h-screen -bottom-0 -left-0' />}
+			{open && (
+				<div
+					aria-hidden
+					onClick={() => {
+						handleClose();
+						props.onCloseByBlur?.();
+					}}
+					className='fixed z-10 bg-transparent w-screen h-screen -bottom-0 -left-0'
+				/>
+			)}
 		</div>
 	);
 }

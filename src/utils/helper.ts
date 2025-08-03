@@ -40,8 +40,7 @@ export class Helper {
 			value === null ||
 			value === undefined ||
 			value === '' ||
-			(Object.keys(value).length === 0 &&
-				Object.getPrototypeOf(value) === Object.prototype) ||
+			(Object.keys(value).length === 0 && Object.getPrototypeOf(value) === Object.prototype) ||
 			(Array.isArray(value) && value.length === 0)
 		);
 	}
@@ -54,9 +53,7 @@ export class Helper {
 		return false;
 	}
 	static isYesterday(millisecond: number) {
-		const isYesterday = dayjs()
-			.add(-1, 'day')
-			.isSame(dayjs(millisecond), 'day');
+		const isYesterday = dayjs().add(-1, 'day').isSame(dayjs(millisecond), 'day');
 
 		return isYesterday;
 	}
@@ -78,14 +75,8 @@ export class Helper {
 		const isEqual = dataItem?.[field] === itemCompare;
 		return { isEqual };
 	}
-	static findItem(
-		dataItem: Array<Record<string, unknown>>,
-		field: string,
-		data: string | number,
-	) {
-		const index = dataItem.findIndex(
-			(item) => (item?.[field] as string) === data,
-		);
+	static findItem(dataItem: Array<Record<string, unknown>>, field: string, data: string | number) {
+		const index = dataItem.findIndex((item) => (item?.[field] as string) === data);
 		const isExist = index !== -1;
 		return { isExist, index };
 	}
@@ -118,5 +109,42 @@ export class Helper {
 		const visiblePart = local.slice(0, 2);
 		const maskedPart = '*'.repeat(local.length - 2);
 		return `${visiblePart}${maskedPart}@${domain}`;
+	}
+	static deepEqual(a: never, b: never): boolean {
+		if (a === b) return true;
+
+		if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+			return false;
+		}
+
+		const keysA = Object.keys(a);
+		const keysB = Object.keys(b);
+
+		if (keysA.length !== keysB.length) return false;
+
+		for (const key of keysA) {
+			if (!keysB.includes(key)) return false;
+			if (!this.deepEqual(a[key], b[key])) return false;
+		}
+
+		return true;
+	}
+	static removeVietnameseTones(str: string) {
+		return str
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/đ/g, 'd')
+			.replace(/Đ/g, 'D')
+			.toLowerCase();
+	}
+
+	static searchText(data: string[], keyword: string) {
+		const normalizedKeyword = this.removeVietnameseTones(keyword);
+		const keywordParts = normalizedKeyword.split(/\s+/);
+
+		return data.filter((item) => {
+			const normalizedItem = this.removeVietnameseTones(item);
+			return keywordParts.every((part) => normalizedItem.includes(part));
+		});
 	}
 }
