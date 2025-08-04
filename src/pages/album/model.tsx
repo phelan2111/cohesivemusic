@@ -9,14 +9,18 @@ import { PATH } from '@/routes/config';
 import { Logger } from '@/utils/logger';
 import usePlay from '@/hooks/usePlay';
 import { AddNewPlaylistFunc } from './types';
-import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
 import { useDispatch } from 'react-redux';
 import { sliceMe } from '@/redux/slice';
+import { PayloadCreatePlaylist } from '@/services/playlist/create';
+import { IItemSong } from '@/layout/desktop/album/components/list/song';
+import AuthService from '@/utils/auth';
 
 type ParamsPlaylistDetails = {
 	id: string;
 };
 function Model() {
+	const profile = AuthService.getPackageProfile();
 	const [playlistDetails, setPlaylistDetails] = useState<ResponsePlaylistDetails>(initialPlaylistDetails);
 	const dispatch = useDispatch();
 	const { playlistMe } = sliceMe.useGetState();
@@ -28,15 +32,15 @@ function Model() {
 			handlerLoading.onSetLoading(false);
 		},
 	});
-	const { handlerService: handlerServiceAdd } = Services.Playlist.Add({
+	const { handlerService: handlerServiceAddSongToPlaylist } = Services.Playlist.AddSongToPlaylist({
 		onSuccess: () => {
-			Logger.info('Model execute Services.Playlist.Add');
+			Logger.info('Model execute Services.Playlist.AddSongToPlaylist');
 			playlistMeFunc();
 		},
 	});
-	const { handlerService: handlerServiceUpdate } = Services.Playlist.Update({
+	const { handlerService: handlerServiceUpdate } = Services.Playlist.UpdateSongToPlaylist({
 		onSuccess: () => {
-			Logger.info('Model execute Services.Playlist.Update');
+			Logger.info('Model execute Services.Playlist.UpdateSongToPlaylist');
 			playlistMeFunc();
 		},
 	});
@@ -44,6 +48,14 @@ function Model() {
 		onSuccess: (dataItem) => {
 			Logger.info('Model execute Services.Playlist.Me');
 			dispatch(sliceMe.func.onSetData(dataItem));
+		},
+		defaultLoading: true,
+	});
+	const { handlerService: handlerServicesCreate } = Services.Playlist.Create({
+		onSuccess: (dataItem) => {
+			Logger.info('Model executeServices.Playlist.Create');
+			Logger.debug('Model executeServices.Playlist.Create response:', dataItem);
+			playlistMeFunc();
 		},
 		defaultLoading: true,
 	});
@@ -59,7 +71,7 @@ function Model() {
 	const addSongToPlaylist = (dataItem: PayloadPlaylistAdd) => {
 		Logger.info('Model execute updateSongToPlaylist');
 		Logger.debug('Model execute playPlaylist have data song', dataItem);
-		handlerServiceAdd.onAdd(dataItem);
+		handlerServiceAddSongToPlaylist.onRequest(dataItem);
 	};
 	const playPlaylist = (songId: string) => {
 		try {
@@ -97,13 +109,24 @@ function Model() {
 			playlistId: params.id,
 		});
 	};
+	const createPlaylist = (dataItem: IItemSong) => {
+		Logger.info('Model execute createPlaylist');
+		Logger.debug('Model execute createPlaylist have dataItem:', dataItem);
+		const payload: PayloadCreatePlaylist = {
+			descriptionPlaylist: `By ${profile.lastName} ${profile.firstName}`,
+			image: dataItem.image,
+			namePlaylist: dataItem.name,
+			songId: dataItem.idSong,
+		};
+		handlerServicesCreate.onRequest(payload);
+	};
 
 	useEffect(() => {
 		handlerLoading.onSetLoading(true);
+		handlerService.onGet({
+			playlistId: params.id,
+		});
 	}, [params]);
-	useEffect(() => {
-		playlistMeFunc();
-	}, []);
 
 	return (
 		<View
@@ -121,6 +144,7 @@ function Model() {
 				updateSongToPlaylist,
 				addSongToPlaylist,
 				playlistMe: playlistMeFunc,
+				createPlaylist,
 			}}
 		/>
 	);

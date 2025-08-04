@@ -7,7 +7,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import useLoading from '@/hooks/useLoading';
 import Localize from '@/langs';
 import { AddNewPlaylistFunc } from '@/pages/album/types';
-import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
 import { ResponsePlaylist } from '@/services/playlist/me';
 import { ResponseRequest } from '@/services/types';
 import { StatusPlaylist } from '@/utils/enums';
@@ -25,6 +25,7 @@ type AddLikeSongsProps = {
 	updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
 	playlistMeResponse: ResponseRequest<ResponsePlaylist>;
 	getPlaylistMe: VoidFunction;
+	createPlaylist: VoidFunction;
 };
 
 type CheckIconProps = {
@@ -119,7 +120,13 @@ function AddLikeSongs({ defaultLike, ...props }: AddLikeSongsProps) {
 								placeholder={Localize('FIND_A_PLAYLIST')}
 							/>
 						</div>
-						<div className='flex items-center gap-1 text-sm border-b px-4 border-primary_dark-10 pb-2'>
+						<div
+							aria-hidden
+							onClick={() => {
+								onClose();
+								props.createPlaylist();
+							}}
+							className='flex items-center gap-1 text-sm border-b px-4 border-primary_dark-10 pb-2'>
 							<FaPlus />
 							<p>{Localize('NEW_PLAYLIST')}</p>
 						</div>

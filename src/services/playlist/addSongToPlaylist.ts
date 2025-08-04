@@ -14,11 +14,11 @@ export type PayloadPlaylistAdd = {
 	playlistId?: string;
 };
 
-function Add({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+function AddSongToPlaylist({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
 	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.add,
+		url: config.api.playlist.addSongToPlaylist,
 		method: 'post',
 		headers: {
 			token: auth?.token,
@@ -29,7 +29,7 @@ function Add({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 		request,
 	});
 
-	const onAdd = (payload: PayloadPlaylistAdd) => {
+	const onRequest = (payload: PayloadPlaylistAdd) => {
 		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
@@ -53,9 +53,9 @@ function Add({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 			loading,
 		},
 		handlerService: {
-			onAdd,
+			onRequest,
 		},
 	};
 }
 
-export default Add;
+export default AddSongToPlaylist;

@@ -8,7 +8,7 @@ import LoaderPreviewMV from '@/components/ui/loader/previewMV';
 import { ResponseRequest } from '@/services/types';
 import { ResponsePlaylist } from '@/services/playlist/me';
 import { AddNewPlaylistFunc } from '@/pages/album/types';
-import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
 
 export interface IItemSong {
 	name: string;
@@ -29,6 +29,7 @@ interface ISongOfAlbumProps {
 	updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
 	pausePlaylist: VoidFunction;
 	playlistMe: VoidFunction;
+	createPlaylist: (dataItem: IItemSong) => void;
 }
 function SongOfAlbum(props: ISongOfAlbumProps) {
 	return (
@@ -79,6 +80,9 @@ function SongOfAlbum(props: ISongOfAlbumProps) {
 								playlistMeResponse={props.playlistMeResponse}
 								addSongToPlaylist={(dataItem) => {
 									props.addSongToPlaylist?.(dataItem);
+								}}
+								createPlaylist={() => {
+									props.createPlaylist(item);
 								}}
 								updateSongToPlaylist={props.updateSongToPlaylist}
 								songId={item.idSong}

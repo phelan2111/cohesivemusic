@@ -18,6 +18,7 @@ export enum StatusPlaylist {
 	hidden = 0,
 	display,
 	user,
+	liked,
 }
 
 export enum TypeSongs {

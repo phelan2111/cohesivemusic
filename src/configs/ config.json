@@ -16,9 +16,10 @@
             "details": "/playlist/getFromUserWebDetails",
             "byUser": "/playlist/byUser",
             "get": "/playlist/getFromUserWeb",
-            "add": "/playlist/getFromUserWeb/add",
-            "update": "/playlist/getFromUserWeb/update",
-            "me": "/playlist/me"
+            "addSongToPlaylist": "/playlist/getFromUserWeb/addSongToPlaylist",
+            "updateSongToPlaylist": "/playlist/getFromUserWeb/updateSongToPlaylist",
+            "me": "/playlist/me",
+            "createByASong": "/playlist/getFromUserWeb/createByASong"
         },
         "singer": {
             "_": "/singer/byUserWeb"

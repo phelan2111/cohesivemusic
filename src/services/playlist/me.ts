@@ -17,6 +17,7 @@ export type ResponsePlaylist = {
 	viewSaves: number;
 	status: number;
 	theme: string;
+	descriptionPlaylist: string;
 };
 export interface SongOfPlaylistsMe {
 	songName: string;

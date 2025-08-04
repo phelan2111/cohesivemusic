@@ -10,13 +10,13 @@ import { Skeletons } from '@/components/ui/skelentons';
 import { Services } from '@/services';
 import { useEffect } from 'react';
 import useLoading from '@/hooks/useLoading';
-import AlbumOfMeItem from '@/components/ui/item/albumMe';
 import { useRedirect } from '@/hooks/useRedirect';
 import { PATH } from '@/routes/config';
 import { useParams } from 'react-router-dom';
 import { StatusPlaylist } from '@/utils/enums';
 import { useAppDispatch } from '@/hooks/redux';
 import { sliceMe } from '@/redux/slice';
+import { ItemAlbum } from '@/components/ui/item/albumMe';
 
 const filter: IItemFilterChip[] = [
 	{
@@ -91,9 +91,9 @@ function NavigateLeft() {
 						<div className='flex flex-col gap-4 h-yourLibraryDk scrollHiddenY relative z-10 overflow-y-auto snap-mandatory snap-y p-4 pr-2'>
 							<Skeletons.YourLibraryAlbum loading={stateLoading.loading}>
 								{playlistMe.list.map((pl) => {
-									if (pl.status === StatusPlaylist.user) {
+									if (pl.status === StatusPlaylist.liked) {
 										return (
-											<AlbumOfMeItem
+											<ItemAlbum.Me
 												key={pl.playlistId}
 												id={params.id}
 												onClick={() => {
@@ -103,7 +103,16 @@ function NavigateLeft() {
 											/>
 										);
 									}
-									return <></>;
+									return (
+										<ItemAlbum.Normal
+											key={pl.playlistId}
+											id={params.id}
+											onClick={() => {
+												redirectPage(`${PATH.ALBUM._}/${pl.playlistId}`);
+											}}
+											item={pl}
+										/>
+									);
 								})}
 								{/* {data.map((i) => {
 									return <YourLibraryAlbumItem key={i.image} {...i} />;

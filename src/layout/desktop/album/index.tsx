@@ -4,7 +4,7 @@ import Localize from '@/langs';
 import { BsThreeDots } from 'react-icons/bs';
 import { GoVerified } from 'react-icons/go';
 import { IoIosPlay } from 'react-icons/io';
-import SongOfAlbum from './components/list/song';
+import SongOfAlbum, { IItemSong } from './components/list/song';
 import { sliceToolControl } from '@/redux/slice';
 import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
 import { Skeletons } from '@/components/ui/skelentons';
@@ -12,7 +12,7 @@ import { Others } from './components/others';
 import { ResponseRequest } from '@/services/types';
 import { ResponsePlaylist } from '@/services/playlist/me';
 import { AddNewPlaylistFunc } from '@/pages/album/types';
-import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
 export function handleStyleViewTool() {
 	const isViewTool = sliceToolControl.useGetState().open;
 	const sliceData = isViewTool ? 5 : 7;
@@ -38,6 +38,7 @@ type AlbumDesktopProps = {
 		playPlaylist: (songId: string) => void;
 		updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
 		playlistMe: VoidFunction;
+		createPlaylist: (dataItem: IItemSong) => void;
 	};
 };
 
@@ -107,6 +108,7 @@ function AlbumDesktop(props: AlbumDesktopProps) {
 											props.handler.addSongToPlaylist(dataItem);
 										}}
 										isPause={props.state.isPause}
+										createPlaylist={props.handler.createPlaylist}
 									/>
 								</div>
 							</article>

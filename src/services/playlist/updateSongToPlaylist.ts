@@ -14,18 +14,18 @@ export type PayloadPlaylistUpdate = {
 	playlistIds: string[];
 };
 
-function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
+function UpdateSongToPlaylist({ defaultLoading = false, ...props }: ResponseHasResponseProps) {
 	const auth = AuthService.getPackageAuth();
 	const [loading, setLoading] = useState<boolean>(defaultLoading as boolean);
 	const request: AxiosRequestConfig = {
-		url: config.api.playlist.update,
+		url: config.api.playlist.updateSongToPlaylist,
 		method: 'post',
 		headers: {
 			token: auth?.token,
 		},
 	};
 	const { mutate } = requestMiddleware({
-		keyQuery: ['PLAYLIST_UPDATE'],
+		keyQuery: ['PLAYLIST_UPDATE_SONG'],
 		request,
 	});
 
@@ -33,7 +33,7 @@ function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 		setLoading(true);
 		mutate(payload, {
 			onSuccess: (data: ResponseBrowser) => {
-				Logger.debug('ServicePlaylistAdd execute handleMutate success', data);
+				Logger.debug('UpdateSongToPlaylist execute handleMutate success', data);
 				const funcName = parseCodeToNameFunc[data.code as unknown as CODE];
 				const hasFunc = Helper.isEmpty(props?.[funcName as string]);
 				if (!hasFunc) {
@@ -42,7 +42,7 @@ function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 				setLoading(false);
 			},
 			onError: (error: unknown) => {
-				Logger.error('ServicePlaylistAdd execute handleMutate success', error as object);
+				Logger.error('UpdateSongToPlaylist execute handleMutate success', error as object);
 				props?.onError?.(error);
 			},
 		});
@@ -58,4 +58,4 @@ function Update({ defaultLoading = false, ...props }: ResponseHasResponseProps) 
 	};
 }
 
-export default Update;
+export default UpdateSongToPlaylist;

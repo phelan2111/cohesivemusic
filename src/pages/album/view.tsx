@@ -5,7 +5,8 @@ import { ResponsePlaylistDetails } from '@/services/playlist/getDetails';
 import { ResponsePlaylist } from '@/services/playlist/me';
 import { ResponseRequest } from '@/services/types';
 import { AddNewPlaylistFunc } from './types';
-import { PayloadPlaylistAdd } from '@/services/playlist/add';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
+import { IItemSong } from '@/layout/desktop/album/components/list/song';
 
 interface IViewProps {
 	state: {
@@ -18,6 +19,7 @@ interface IViewProps {
 	handler: {
 		onFindSongs: VoidFunction;
 		addSongToPlaylist: (dataItem: PayloadPlaylistAdd) => void;
+		createPlaylist: (dataItem: IItemSong) => void;
 		playPlaylist: (songId: string) => void;
 		pausePlaylist: VoidFunction;
 		updateSongToPlaylist: (dataItem: AddNewPlaylistFunc) => void;
