@@ -7,7 +7,7 @@ import eslint from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [react(), eslint()],
+	plugins: [react(), process.env.NODE_ENV === 'development' && eslint()].filter(Boolean),
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src/'),
@@ -32,6 +32,8 @@ export default defineConfig({
 		},
 	},
 	build: {
+		sourcemap: false,
+		minify: 'esbuild',
 		rollupOptions: {
 			output: {
 				assetFileNames: (assetInfo: any) => {
