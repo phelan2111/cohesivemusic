@@ -2,8 +2,12 @@ import usePlay from '@/hooks/usePlay';
 import { ControlToolProps } from '.';
 import View from './view';
 import { Logger } from '@/utils/logger';
+import { PayloadSongsUpdateView } from '@/services/songs/updateView';
 
-function Model(props: ControlToolProps) {
+type ModelProps = {
+	updateView: (dataItem: PayloadSongsUpdateView) => void;
+} & ControlToolProps;
+function Model(props: ModelProps) {
 	const { state, handler } = usePlay();
 
 	const play = () => {
@@ -23,6 +27,16 @@ function Model(props: ControlToolProps) {
 			Logger.error('Tool.control execute pause error', error as object);
 		}
 	};
+	const updateViewOnce = () => {
+		try {
+			Logger.info('Tool.control execute updateViewOnce');
+			props.updateView({
+				songId: props.data.songId,
+			});
+		} catch (error) {
+			Logger.error('Tool.control execute updateViewOnce error', error as object);
+		}
+	};
 
 	return (
 		<View
@@ -34,6 +48,7 @@ function Model(props: ControlToolProps) {
 			handler={{
 				pause,
 				play,
+				updateViewOnce,
 			}}
 		/>
 	);

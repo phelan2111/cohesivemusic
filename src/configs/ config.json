@@ -27,7 +27,8 @@
         "song": {
             "_": "/song/byUserWeb",
             "details": "/song/byUserWeb/details",
-            "short": "/song/byUserWeb/short"
+            "short": "/song/byUserWeb/short",
+            "updateView": "/song/byUserWeb/viewSong"
         }
     },
     "clientId": "1044167993607-jt9ba2dqtc24e32d20e5o17o2k7bo13t.apps.googleusercontent.com",

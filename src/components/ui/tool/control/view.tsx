@@ -8,6 +8,7 @@ type ViewProps = {
 	};
 	handler: {
 		play: VoidFunction;
+		updateViewOnce: VoidFunction;
 		pause: (timing: number) => void;
 	};
 };

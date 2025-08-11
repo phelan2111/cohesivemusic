@@ -15,9 +15,11 @@ type ProcessPlaySongProps = {
 	handler: {
 		play: VoidFunction;
 		pause: (timing: number) => void;
+		updateViewOnce: VoidFunction;
 	};
 };
 
+let hasViewed = false;
 type DurationSong = {
 	timeCurrent: number;
 	totalTime: number;
@@ -61,6 +63,25 @@ function ProcessPlaySong({ state: { link = '', timeCurrent = 0, isPlay = false }
 			Logger.error('Tool.song ProcessPlaySong execute pause error', error as object);
 		}
 	};
+	const seek = (e: React.MouseEvent<HTMLDivElement>) => {
+		try {
+			Logger.info('Tool.song ProcessPlaySong execute seek');
+			if (!ref.current) return;
+			const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+			//width đang đc target = Tọa độ từ mép trái của trình duyệt tới vị trí con chuột đang trỏ - Tọa độ từ mép trái của trình duyệt tới đầu mép trái của phần từ
+			const clickX = e.clientX - rect.left;
+			const percent = clickX / rect.width;
+
+			const newTime = percent * duration.totalTime;
+			ref.current.currentTime = newTime;
+			setDuration((prev) => ({
+				...prev,
+				timeCurrent: newTime,
+			}));
+		} catch (error) {
+			Logger.error('Tool.song ProcessPlaySong execute seek error', error as object);
+		}
+	};
 
 	useEffect(() => {
 		if (ref.current) {
@@ -69,12 +90,17 @@ function ProcessPlaySong({ state: { link = '', timeCurrent = 0, isPlay = false }
 	}, [ref]);
 
 	useEffect(() => {
+		Logger.debug('ProcessPlaySong isPlay', `${isPlay}`);
 		if (isPlay) {
 			play();
 		} else {
 			pause();
 		}
-	}, [isPlay]);
+	}, [isPlay, link]);
+
+	useEffect(() => {
+		hasViewed = false;
+	}, [link]);
 	return (
 		<Fragment>
 			<div className='text-2xl flex gap-4 items-center'>
@@ -104,6 +130,10 @@ function ProcessPlaySong({ state: { link = '', timeCurrent = 0, isPlay = false }
 					});
 				}}
 				onTimeUpdate={(event) => {
+					if (event.currentTarget.currentTime >= duration.totalTime / 10 && !hasViewed && duration.totalTime > 0) {
+						props.handler.updateViewOnce();
+						hasViewed = true;
+					}
 					setDuration({
 						timeCurrent: event.currentTarget.currentTime,
 						totalTime: duration.totalTime,
@@ -111,7 +141,7 @@ function ProcessPlaySong({ state: { link = '', timeCurrent = 0, isPlay = false }
 				}}
 				id={'toolSong'}
 				muted
-				autoPlay
+				autoPlay={false}
 				src={link}
 				className={`h-full w-full object-cover`}
 				controls={false}>
@@ -124,12 +154,15 @@ function ProcessPlaySong({ state: { link = '', timeCurrent = 0, isPlay = false }
 					{`0${Helper.convertTime(duration.timeCurrent).minus}`.slice(-2)}:
 					{`0${Helper.convertTime(duration.timeCurrent).second}`.slice(-2)}
 				</div>
-				<div className='w-[400px] h-1 rounded-xl overflow-hidden bg-primary_dark-20'>
+				<div
+					aria-hidden
+					onClick={seek}
+					className='w-[400px] hover:bg-primary_dark-20/60 transition-all duration-300 cursor-pointer h-1.5 rounded-xl overflow-hidden bg-primary_dark-20'>
 					<div
 						style={{
 							width: widthProcess * duration.timeCurrent,
 						}}
-						className='bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-1 rounded-xl'
+						className='bg-gradient-to-r from-indigo-500 via-purple-500 transition-all duration-500 to-pink-500 h-1.5 rounded-xl'
 					/>
 				</div>
 				<div>
