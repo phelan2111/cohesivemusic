@@ -31,6 +31,9 @@ export default defineConfig({
 			ui: `${path.resolve(__dirname, './src/ui/')}`,
 		},
 	},
+	optimizeDeps: {
+		include: ['react', 'react-dom'],
+	},
 	build: {
 		sourcemap: false,
 		minify: 'esbuild',
