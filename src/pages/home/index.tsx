@@ -9,6 +9,9 @@ import { ResponseSingerNewest, ResponseSongNewest, ResponseYourTopMixes } from '
 import { TypeSongs } from '@/utils/enums';
 import { ResponseSinger } from '@/services/singer/get';
 import { ResponseSong } from '@/services/songs/get';
+import { Logger } from '@/utils/logger';
+import { useDispatch } from 'react-redux';
+import { sliceMe } from '@/redux/slice';
 
 function YourTopMixesResponse(): ResponseYourTopMixes {
 	const [playlistResponse, setPlaylistResponse] = useState<ResponseRequest<ResponsePlaylist>>(
@@ -85,7 +88,6 @@ function SongsResponse(): ResponseSongNewest {
 		loading: stateLoading.loading,
 	};
 }
-
 function MVResponse(): ResponseSongNewest {
 	const [songResponse, setSongResponse] = useState<ResponseRequest<ResponseSong>>(
 		initialResponseRequest as ResponseRequest<ResponseSong>,
@@ -109,6 +111,75 @@ function MVResponse(): ResponseSongNewest {
 	return {
 		songResponse,
 		loading: stateLoading.loading,
+		handler: {
+			onFresh: () => {
+				handlerService.onGet({
+					from: 0,
+					limit: 6,
+					type: TypeSongs.video,
+				});
+			},
+		},
+	};
+}
+type ServicesPlaylistProps = {
+	callback?: VoidFunction;
+};
+function AddPlaylist(props: ServicesPlaylistProps) {
+	const { handlerService } = Services.Playlist.AddSongToPlaylist({
+		onSuccess: () => {
+			Logger.info('AddPlaylist execute Services.Playlist.AddSongToPlaylist');
+			props.callback?.();
+		},
+	});
+
+	return {
+		handler: {
+			request: handlerService.onRequest,
+		},
+	};
+}
+function UpdatePlaylist(props: ServicesPlaylistProps) {
+	const { handlerService } = Services.Playlist.UpdateSongToPlaylist({
+		onSuccess: () => {
+			Logger.info('Model execute Services.Playlist.UpdateSongToPlaylist');
+			props.callback?.();
+		},
+	});
+	return {
+		handler: {
+			request: handlerService.onRequest,
+		},
+	};
+}
+function GetPlaylistMe() {
+	const dispatch = useDispatch();
+	const { handlerService } = Services.Playlist.Me({
+		onSuccess: (dataItem) => {
+			Logger.info('Model execute Services.Playlist.Me');
+			dispatch(sliceMe.func.onSetData(dataItem));
+		},
+		defaultLoading: true,
+	});
+	return {
+		handler: {
+			request: handlerService.onGet,
+		},
+	};
+}
+function CreatePlaylistMe(props: ServicesPlaylistProps) {
+	const { handlerService } = Services.Playlist.Create({
+		onSuccess: (dataItem) => {
+			Logger.info('Model executeServices.Playlist.Create');
+			Logger.debug('Model executeServices.Playlist.Create response:', dataItem);
+			props.callback?.();
+		},
+		defaultLoading: true,
+	});
+	return {
+		handler: {
+			request: handlerService.onRequest,
+		},
 	};
 }
 
@@ -117,8 +188,38 @@ function Home() {
 	const singersNewest = SingersResponse();
 	const songsNewest = SongsResponse();
 	const MVNewest = MVResponse();
+	const addPlaylist = AddPlaylist({
+		callback: () => {
+			MVNewest.handler?.onFresh?.();
+			getPlaylistOfMe.handler.request();
+		},
+	});
+	const updatePlaylist = UpdatePlaylist({
+		callback: () => {
+			MVNewest.handler?.onFresh?.();
+			getPlaylistOfMe.handler.request();
+		},
+	});
+	const getPlaylistOfMe = GetPlaylistMe();
+	const createPlaylistOfMe = CreatePlaylistMe({
+		callback: () => {
+			MVNewest.handler?.onFresh?.();
+			getPlaylistOfMe.handler.request();
+		},
+	});
 
-	return <Model singersNewest={singersNewest} songsNewest={songsNewest} yourTopMixes={yourTopMixes} MVNewest={MVNewest} />;
+	return (
+		<Model
+			addPlaylist={addPlaylist}
+			createPlaylistOfMe={createPlaylistOfMe}
+			getPlaylistOfMe={getPlaylistOfMe}
+			updatePlaylist={updatePlaylist}
+			singersNewest={singersNewest}
+			songsNewest={songsNewest}
+			yourTopMixes={yourTopMixes}
+			MVNewest={MVNewest}
+		/>
+	);
 }
 
 export default Home;

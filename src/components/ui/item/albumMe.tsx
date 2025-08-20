@@ -50,7 +50,7 @@ function Normal(props: IAlbumOfMeItemProps) {
 			className={`flex items-center liked gap-4 transition-all group duration-500 cursor-pointer snap-start relative rounded-md hover:bg-white/10 ${
 				isActive ? 'bg-white/10' : ''
 			}`}>
-			<div className='size-20 min-w-20 rounded-md'>
+			<div className='size-20 min-w-20 max-h-20 rounded-md overflow-hidden'>
 				<img src={props.item.image} alt={props.item.namePlaylist} className='rounded-md' />
 			</div>
 			<div className='flex flex-col gap-1'>

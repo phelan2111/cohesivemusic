@@ -126,7 +126,7 @@ function AddLikeSongs({ defaultLike, ...props }: AddLikeSongsProps) {
 								onClose();
 								props.createPlaylist();
 							}}
-							className='flex items-center gap-1 text-sm border-b px-4 border-primary_dark-10 pb-2'>
+							className='flex items-center cursor-pointer gap-1 text-sm border-b px-4 border-primary_dark-10 pb-2'>
 							<FaPlus />
 							<p>{Localize('NEW_PLAYLIST')}</p>
 						</div>
@@ -153,7 +153,7 @@ function AddLikeSongs({ defaultLike, ...props }: AddLikeSongsProps) {
 												<p className='text-sm font-medium'>{pl.namePlaylist}</p>
 											</div>
 											<div className='flex items-center gap-2'>
-												{pl.status === StatusPlaylist.user && <TiPin className='text-xl' />}
+												{pl.status === StatusPlaylist.liked && <TiPin className='text-xl' />}
 												<CheckIcon
 													checked={isExist}
 													onClick={() => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResponsePlaylist } from '@/services/playlist/useGet';
 import { ResponseSinger } from '@/services/singer/get';
 import { ResponseSong } from '@/services/songs/get';
@@ -16,4 +17,11 @@ export type ResponseSingerNewest = {
 export type ResponseSongNewest = {
 	songResponse: ResponseRequest<ResponseSong>;
 	loading: boolean;
+	[name: string]: any;
+};
+
+export type FuncRequest = {
+	handler: {
+		request: (dataItem?: any) => void;
+	};
 };

@@ -45,6 +45,10 @@ export default defineConfig({
 				},
 				chunkFileNames: 'assets/js/[name]-[hash].js',
 				entryFileNames: 'assets/js/[name]-[hash].js',
+				manualChunks: {
+					react: ['react', 'react-dom'],
+					utils: ['lodash', 'dayjs'],
+				},
 			},
 		},
 	},

@@ -9,6 +9,11 @@ import AppBarTop from '@/components/ui/appbar/top';
 import { sliceToolControl } from '@/redux/slice';
 import { ResponseSingerNewest, ResponseSongNewest, ResponseYourTopMixes } from '@/pages/home/types';
 import NewMV from './components/list/newMV';
+import { PayloadPlaylistAdd } from '@/services/playlist/addSongToPlaylist';
+import { ResponseRequest } from '@/services/types';
+import { ResponsePlaylist } from '@/services/playlist/me';
+import { PayloadPlaylistUpdate } from '@/services/playlist/updateSongToPlaylist';
+import { PayloadCreatePlaylist } from '@/services/playlist/create';
 export function handleStyleViewTool() {
 	const isViewTool = sliceToolControl.useGetState().open;
 	const sliceData = isViewTool ? 5 : 7;
@@ -26,6 +31,17 @@ type HomeDesktopProps = {
 	MVNewest: ResponseSongNewest;
 	handler: {
 		onRedirect: (path: string) => void;
+		addSongToPlaylist?: (dataItem: PayloadPlaylistAdd) => void;
+		updateSongToPlaylist: (dataItem: PayloadPlaylistUpdate) => void;
+		createPlaylist: (dataItem: PayloadCreatePlaylist) => void;
+		playlistMe: VoidFunction;
+		pauseSong: VoidFunction;
+		playSong: (songId: string) => void;
+	};
+	state: {
+		playlistMeResponse: ResponseRequest<ResponsePlaylist>;
+		songId: string;
+		isPause: boolean;
 	};
 };
 function HomeDesktop(props: HomeDesktopProps) {
@@ -40,7 +56,7 @@ function HomeDesktop(props: HomeDesktopProps) {
 					<YourFavoriteArtists singersNewest={props.singersNewest} />
 					<NewReleaseCard songsNewest={props.songsNewest} handler={props.handler} />
 					{/* <EpisodesForYou /> */}
-					<NewMV MVNewest={props.MVNewest} handler={props.handler} />
+					<NewMV MVNewest={props.MVNewest} handler={props.handler} state={props.state} />
 				</section>
 			</div>
 		</ResponsiveDesktop>

@@ -6,7 +6,7 @@ import { Logger } from '@/utils/logger';
 import { CODE, parseCodeToNameFunc } from '@/configs/responseCode';
 import { Helper } from '@/utils/helper';
 import AuthService from '@/utils/auth';
-import { TypeSongs } from '@/utils/enums';
+import { TypeSongBelongUser, TypeSongs } from '@/utils/enums';
 const config = new Config().getState();
 
 export type PayloadSongsGet = {
@@ -27,6 +27,7 @@ export type ResponseSong = {
 	type: number;
 	duration: number;
 	singers: ItemSinger[];
+	isBelong: TypeSongBelongUser;
 };
 
 export interface ItemSinger {
